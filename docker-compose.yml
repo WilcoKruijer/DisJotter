@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    main:
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile
+        volumes:
+            - .:/src
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./notebooks:/notebooks
+        ports:
+            - "8888:8888"
