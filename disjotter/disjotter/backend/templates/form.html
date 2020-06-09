@@ -1,0 +1,112 @@
+<style>
+    .hide {
+        display: none
+    }
+
+    #disjotter-form {
+        padding: 1em 0 2em 0;
+    }
+    #disjotter-form h4 {
+        margin: 0;
+        padding: 0 0 0.5em 1em;
+    }
+    .flex-outer {
+        padding: 0;
+    }
+    .flex-outer li {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0 2em;
+    }
+    .flex-outer > li > label,
+    .flex-outer > li > p {
+        flex: 1 0 120px;
+        max-width: 220px;
+    }
+    #cell-preview {
+        margin: 0.75em 0;
+    }
+    .divider {
+        border-top: 1px solid #e5e5e5;
+        margin-top: 2em;
+        padding-top: 1em;
+    }
+    .modal-body {
+        padding: 0 !important;
+    }
+</style>
+
+<ul id="tabs" class="nav nav-tabs">
+    <li id="btn-tab-build" class="active">
+        <a href="#build" data-toggle="tab">Build</a>
+    </li>
+    <li id="btn-tab-run">
+        <a href="#run" data-toggle="tab">Run</a>
+    </li>
+    <li id="btn-tab-validate">
+        <a href="#validate" data-toggle="tab">Validate</a>
+    </li>
+</ul>
+
+<form id="disjotter-form">
+    <ul id="disjotter-build" class="flex-outer">
+        <h4>Build</h4>
+        <li>
+            <label for="image-name">Image name:</label>
+            <input id="image-name" value="nb_helper"/>
+        </li>
+        <li>
+            <label for="base-image">Base image:</label>
+            <select id="base-image" name="base-image" form="create-form">
+                {% for display, image in images %}
+                    <option value="{{ image }}">{{ display }}</option>
+                {% end %}
+            </select>
+        </li>
+        <li>
+            <label for="cell-index">Cell:</label>
+            <select id="cell-index" form="create-form">
+                
+            </select>
+            
+        </li>
+        <li>
+            <p>Preview:</p>
+            <div id="cell-preview"></div>
+        </li>
+        <li>
+            <label for="requirements-area">Requirements.txt (Python only):</label>
+            <textarea id="requirements-area" cols="50" rows="5" type="textarea"></textarea>
+        </li>
+        <li id="kernel-specific">
+        </li>
+        <li>
+            <input id="build-button" type="submit" value="Build"/>
+        </li>
+        <li>
+            <p>Build logs:</p>
+            <textarea id="build-output" cols="50" rows="5" type="textarea" disabled></textarea>
+        </li>
+    </ul>
+
+    <ul id="disjotter-run" class="flex-outer hide">
+        <h4>Run</h4>
+        <li>
+            <label for="run-port">Port:</label>
+            <input id="run-port" value="10000" type="number"/>
+        </li>
+        <li>
+            <label for="container-status">Status:</label>
+            <input id="container-status" value="idle" type="text" disabled/>
+        </li>
+        <li>
+            <input id="run-button" type="submit" value="Run"/>
+            <input id="status-button" type="submit" value="Status"/>
+            <input id="stop-button" type="submit" value="Stop"/>
+        </li>
+    </ul>
+    <ul id="disjotter-validate" class="flex-outer hide">
+        <h4>Validate</h4> 
+    </ul>
+</form>
