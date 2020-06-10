@@ -15,11 +15,6 @@ try:
 except FileNotFoundError:
     long_description = short_desc
 
-try:
-    copyfile("../helper_requirements.txt", "./helper_requirements.txt")
-    copyfile("../requirements.txt", "./requirements.txt")
-except:
-    print('copyfile failed.')
 
 setuptools.setup(
     name="DisJotter",
@@ -46,7 +41,5 @@ setuptools.setup(
 
 try:
     os.remove("./README.md")
-    # os.remove("./helper_requirements.txt")
-    # os.remove("./requirements.txt")
 except:
-    print('delete error.')
+    pass

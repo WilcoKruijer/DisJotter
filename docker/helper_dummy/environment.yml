@@ -1,4 +1,4 @@
-# conda env update --file environment.yml --name base
+# conda env update --quiet --file environment.yml --name base
 
 channels:
   - conda-forge

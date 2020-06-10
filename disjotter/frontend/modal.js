@@ -39,8 +39,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     }
 
     const switchTab = async (newTab) => {
-        console.log('switching', newTab);
-
         Object.keys(formElements).forEach(k => {
             formElements[k].classList.add('hide');
         });
@@ -102,11 +100,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         })
 
         let timeoutId = setTimeout(() => {
-            console.log('timeoput1');
             elms.buildNotify.innerHTML = "This might take a while..."
 
             timeoutId = setTimeout(() => {
-                console.log('timeout2');
                 elms.buildNotify.innerHTML = "Especially the first time ..."
             }, 5000)
         }, 5000)
@@ -138,8 +134,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         elms.runButton.value = 'Running...';
         elms.runButton.disabled = true;
-
-        console.log('timeout set')
 
         const imageName = elms.imageNameInput.value;
         const res = await jsonRequest('POST', `/dj/image/${imageName}/command/run`, {
@@ -190,8 +184,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
 
     const onOpen = async () => {
-        console.log('Opening.')
-
         notebook = await Jupyter.notebook.save_notebook();
         
         buttonElements['build'] = document.getElementById("btn-tab-build");

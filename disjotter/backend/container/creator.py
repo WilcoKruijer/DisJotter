@@ -31,11 +31,10 @@ class ContainerCreator:
                 f'WORKDIR /src/',
 
                 f'COPY ./disjotter/ /src/disjotter/',
-                f"RUN pip install -r /src/disjotter/helper_requirements.txt && \\",
-                f"pip install --no-deps -e /src/disjotter",
+                f"RUN pip install -r /src/disjotter/helper/helper_requirements.txt",
 
                 f'COPY ./environment.yml /src/environment.yml',
-                f"RUN conda env update --file environment.yml --name base",
+                f"RUN conda env update --quiet --file environment.yml --name base",
 
                 f"USER $NB_UID",
 
@@ -47,11 +46,8 @@ class ContainerCreator:
         )
 
     def build_container(self, dockerfile: str) -> docker.api.image.ImageApiMixin:
-        # os.system(f"docker build -f /tmp/Dockerfile -t {self.name} .")
-
         #  Save working directory so we can reset it later
         wd = os.getcwd()
-        print('saving wd', wd)
         os.chdir(self.folder)
 
         try:
@@ -67,7 +63,6 @@ class ContainerCreator:
 
   
     def run_container(self, port=10000) -> docker.api.container.ContainerApiMixin:
-    # status = os.system(f"docker run --rm -d -p 8111:8111 --name {self.name} {self.name}")
         try:
             cont = self.client.containers.get(self.name)
             cont.stop(timeout=1)

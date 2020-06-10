@@ -6,8 +6,6 @@ define(["require", "base/js/namespace", "./modal"], function (require) {
 
     return {
         load_ipython_extension: () => {
-            console.log('test2', modal);
-
             const action = {
                 icon: 'fa-comment-o', // a font-awesome class used on buttons, etc
                 help: 'Launch the DisJotter wizard',

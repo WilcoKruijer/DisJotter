@@ -1,3 +1,0 @@
-tornado==6.0.4
-jupyter_client
-jupyter_core
