@@ -70,6 +70,11 @@ class BuildHandler(BaseHandler):
                 config = create_config(notebook_name, cell_index, variables)
                 cfg.write(config)
 
+            with open(tmpdir + "/.dockerignore", "a") as ignore:
+                ignore.write("**/backend\n")
+                ignore.write("**/frontend\n")
+                print('docker ignroe haha123123')
+
             cc = ContainerCreator(tmpdir, image_name, base_image)
 
             try:

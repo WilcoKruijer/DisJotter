@@ -15,10 +15,8 @@ class InspectHandler(BaseHandler):
         kernel = notebook['content']['metadata']['kernelspec']['name']
 
         try:
-            #  ext_module.backend.inspection
-            inspection_package = __name__.rsplit('.', 2)[0] + ".inspection"
             inspector_module = importlib.import_module(
-                f'..inspection.{kernel}', package=inspection_package)
+                f'.inspection.{kernel}', package="disjotter")
 
             inspector = inspector_module.inspector()
             

@@ -21,6 +21,7 @@
     }
     .flex-outer > li > label,
     .flex-outer > li > p {
+    /* .flex-outer > li > div { */
         flex: 1 0 120px;
         max-width: 220px;
     }
@@ -82,7 +83,10 @@
         <li id="kernel-specific">
         </li>
         <li>
-            <input id="build-button" type="submit" value="Build"/>
+            <p>
+                <input id="build-button" type="submit" value="Build"/>
+            </p>
+            <p id="build-notify"></p>
         </li>
         <li>
             <p>Build logs:</p>
@@ -101,9 +105,11 @@
             <input id="container-status" value="idle" type="text" disabled/>
         </li>
         <li>
-            <input id="run-button" type="submit" value="Run"/>
-            <input id="status-button" type="submit" value="Status"/>
-            <input id="stop-button" type="submit" value="Stop"/>
+            <div>
+                <input id="run-button" type="submit" value="Run"/>
+                <input id="status-button" type="submit" value="Status"/>
+                <input id="stop-button" type="submit" value="Stop"/>
+            </div>
         </li>
     </ul>
     <ul id="disjotter-validate" class="flex-outer hide">

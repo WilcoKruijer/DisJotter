@@ -24,12 +24,14 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             runPortInput: document.getElementById('run-port'),
 
             buildButton: document.getElementById('build-button'),
+            buildOutput: document.getElementById('build-output'),
+            buildNotify: document.getElementById('build-notify'),
+
             runButton: document.getElementById('run-button'),
             statusButton: document.getElementById('status-button'),
             stopButton: document.getElementById('stop-button'),
 
             cellPreview: document.getElementById('cell-preview'),
-            buildOutput: document.getElementById('build-output'),
             containerStatus: document.getElementById('container-status'),
 
             kernelSpecific: document.getElementById('kernel-specific')
@@ -99,6 +101,16 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             variables[elm.dataset.variable] = elm.value
         })
 
+        let timeoutId = setTimeout(() => {
+            console.log('timeoput1');
+            elms.buildNotify.innerHTML = "This might take a while..."
+
+            timeoutId = setTimeout(() => {
+                console.log('timeout2');
+                elms.buildNotify.innerHTML = "Especially the first time ..."
+            }, 5000)
+        }, 5000)
+
         const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/build`, {
             imageName: elms.imageNameInput.value,
             baseImage: elms.baseImageSelector.value,
@@ -106,6 +118,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             environment: elms.environmentArea.value,
             variables: variables
         })
+
+        clearTimeout(timeoutId);
+        elms.buildNotify.innerHTML = ""
 
         if (res.status !== 200) {
             return alert(await res.text())
@@ -123,6 +138,8 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         elms.runButton.value = 'Running...';
         elms.runButton.disabled = true;
+
+        console.log('timeout set')
 
         const imageName = elms.imageNameInput.value;
         const res = await jsonRequest('POST', `/dj/image/${imageName}/command/run`, {
@@ -194,6 +211,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms = getElements();
 
         setCellSelectOptions(elms.cellSelector, elms.cellPreview);
+
 
         elms.buildButton.onclick = handlebuildButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
