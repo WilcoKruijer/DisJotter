@@ -11,3 +11,12 @@ services:
             - ./notebooks:/notebooks
         ports:
             - "8888:8888"
+    helper:
+        build:
+            context: .
+            dockerfile: ./docker/helper.Dockerfile
+        volumes:
+            - ./disjotter:/src/disjotter
+            - ./docker/helper_dummy:/src
+        ports:
+            - "10000:8888"

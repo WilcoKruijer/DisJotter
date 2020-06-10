@@ -1,0 +1,7 @@
+# conda env update --file environment.yml --name base
+
+channels:
+  - conda-forge
+dependencies:
+  - pip:
+    - matplotlib==3.0.2

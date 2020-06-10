@@ -67,7 +67,6 @@ class NotebookRunner:
                 elif msg_type == 'error':
                     ret_content['error'] = content
             except Empty:
-                print("EMPTY", flush=True)
                 return {}
 
         return ret_content

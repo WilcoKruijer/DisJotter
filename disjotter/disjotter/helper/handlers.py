@@ -7,13 +7,8 @@ from typing import Optional
 
 from tornado.web import RequestHandler, HTTPError
 
-from notebook_runner import NotebookRunner
-
-
-def get_config():
-    with open('nb_helper_config.json', 'r') as cfg:
-        return json.load(cfg)
-
+from .notebook_runner import NotebookRunner
+from .util import get_config
 
 class NotebookRunnerHandler(RequestHandler):
     def get(self, path):
@@ -45,8 +40,6 @@ class NotebookRunnerHandler(RequestHandler):
                 data = cell['display']['data']
             else:
                 data = cell['result']['data']
-
-            print(cell.keys(), data.keys())
 
             if 'image/png' in data:
                 img = data['image/png']
@@ -80,7 +73,6 @@ class NotebookRunnerHandler(RequestHandler):
             self.write(cell['error'])
 
         else:
-            print(201)
             self.set_status(201)
 
     def _int_argument(self, name, default=None) -> Optional[int]:
@@ -91,10 +83,13 @@ class NotebookRunnerHandler(RequestHandler):
 
 
 class MainHandler(NotebookRunnerHandler):
-    def _get_runner(self, kernel, config):
+    def _get_inspector(self, kernel, config):
         try:
-            inspector_module = importlib.import_module(f'inspection.{kernel}')
-            return inspector_module.runner(config)
+            inspection_package = __name__.rsplit('.', 2)[0] + ".inspection"
+            inspector_module = importlib.import_module(f'..backend.inspection.{kernel}',
+                package=inspection_package)
+
+            return inspector_module.inspector()
         except ModuleNotFoundError:
             return None
 
@@ -102,11 +97,7 @@ class MainHandler(NotebookRunnerHandler):
         return self.get()
 
     def get(self):
-        # os.system('pwd')
-        # os.system('ls')
         config = get_config()
-
-        print('xxx', self.request.method)
 
         idx = config['index']
 
@@ -115,15 +106,13 @@ class MainHandler(NotebookRunnerHandler):
         except FileNotFoundError:
             raise HTTPError(404, config['path'] + " not found.")
 
-        runner = self._get_runner(nr.kernel_name, config)
+        runner = self._get_inspector(nr.kernel_name, config)
 
         if runner:
-            nr.set_run_before(idx, runner.run_pre_cell(self))
+            nr.set_run_before(idx, runner.run_pre_cell(config, self))
 
         cell_results = nr.run_until(idx)
 
         nr.shutdown()
 
         self._write_cell(cell_results[idx])
-
-        # self.write('goodbye.')
