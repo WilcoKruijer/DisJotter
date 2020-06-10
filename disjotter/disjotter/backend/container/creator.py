@@ -28,11 +28,21 @@ class ContainerCreator:
             #  TODO : Optimize this Dockerfile to properly use cache.
             "\n".join([
                 f'FROM {self.base_image}',
+                f'USER root',
                 f'WORKDIR /src/',
-                f'COPY . /src/',
-                f"RUN pip install -r /src/helper/helper_requirements.txt && \\",
-                f"pip install -r /src/requirements.txt",
-                f'ENTRYPOINT ["python", "helper/helper_main.py"]'
+                f'COPY ./disjotter/ /src/disjotter/',
+                f"RUN pip install -r /src/disjotter/helper_requirements.txt && \\",
+                f"pip install -e /src/disjotter",
+
+                f'COPY ./environment.yml /src/environment.yml',
+                f"RUN conda env update --file environment.yml --name base",
+
+                f"USER $NB_UID",
+
+                f'COPY ./notebook.ipynb /src/notebook.ipynb',
+                f'COPY ./nb_helper_config.json /src/nb_helper_config.json',
+
+                f'ENTRYPOINT ["python", "-m", "disjotter"]'
             ])
         )
 

@@ -13,7 +13,8 @@ from pigar.core import parse_packages
 
 from ..container.creator import ContainerCreator
 from .base_handler import BaseHandler
-from ..helper import dummy
+from .environment_handler import BASE_STRING
+
 
 def create_config(notebook_path, cell_index, variables):
     return json.dumps({
@@ -45,24 +46,25 @@ class BuildHandler(BaseHandler):
         if image_name is None or base_image is None or cell_index is None:
             raise HTTPError(400, 'abc')
 
-        requirements = body.get('requirements', '')
+        requirements = body.get('environment', BASE_STRING)
 
         #  Create a temporary dir which will be our build context.
         with tempfile.TemporaryDirectory() as tmpdir:
             shutil.copyfile(notebook_path, tmpdir + "/" + notebook_name)
 
+            #  Find the location of the DisJotter module on disk
+            #  So it can copy & install it in the container.
             dirname = os.path.dirname(__file__)
-            helper_dir = os.path.join(dirname + "/../helper")
+            nested_levels = len(__name__.split('.')) - 1
+            module_path = os.path.join(dirname + '/..' * nested_levels)
 
             #  Copy helper to build context.
-            shutil.copytree(helper_dir, 
-                tmpdir + "/helper/",
+            shutil.copytree(module_path, 
+                tmpdir + "/disjotter/",
                 ignore=shutil.ignore_patterns('.ipynb_checkpoints', '__pycache__'))
 
-            with open(tmpdir + "/requirements.txt", "a") as reqs:
-                # requirements = write_requirements(determine_packages(tmpdir))
-                # reqs.write(requirements)
-                reqs.write('')
+            with open(tmpdir + "/environment.yml", "a") as reqs:
+                reqs.write(requirements)
 
             with open(tmpdir + "/nb_helper_config.json", "a") as cfg:
                 config = create_config(notebook_name, cell_index, variables)
@@ -77,9 +79,6 @@ class BuildHandler(BaseHandler):
 
         logs = "".join([l['stream'] if 'stream' in l else '' for l in log])
     
-        print("Done", image_name, base_image, cell_index)
-#
-        print('aaaa', flush=True)
 
         self.finish(json.dumps({
             'logs': logs
