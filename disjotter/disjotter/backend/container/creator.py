@@ -32,7 +32,7 @@ class ContainerCreator:
 
                 f'COPY ./disjotter/ /src/disjotter/',
                 f"RUN pip install -r /src/disjotter/helper_requirements.txt && \\",
-                f"pip install -e /src/disjotter",
+                f"pip install --no-deps -e /src/disjotter",
 
                 f'COPY ./environment.yml /src/environment.yml',
                 f"RUN conda env update --file environment.yml --name base",
