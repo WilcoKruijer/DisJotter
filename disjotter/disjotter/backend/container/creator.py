@@ -25,11 +25,11 @@ class ContainerCreator:
 
     def get_dockerfile(self) -> str:
         return (
-            #  TODO : Optimize this Dockerfile to properly use cache.
             "\n".join([
                 f'FROM {self.base_image}',
                 f'USER root',
                 f'WORKDIR /src/',
+
                 f'COPY ./disjotter/ /src/disjotter/',
                 f"RUN pip install -r /src/disjotter/helper_requirements.txt && \\",
                 f"pip install -e /src/disjotter",
@@ -54,13 +54,14 @@ class ContainerCreator:
         print('saving wd', wd)
         os.chdir(self.folder)
 
-        image, log = self.client.images.build(tag=self.name, 
-                                        path='.',
-                                        dockerfile=dockerfile,
-                                        rm=True)
-
-        #  Change back
-        os.chdir(wd)
+        try:
+            image, log = self.client.images.build(tag=self.name, 
+                                            path='.',
+                                            dockerfile=dockerfile,
+                                            rm=True)
+        finally:
+            #  Change back
+            os.chdir(wd)
 
         return image, log
 

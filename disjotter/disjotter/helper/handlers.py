@@ -85,9 +85,8 @@ class NotebookRunnerHandler(RequestHandler):
 class MainHandler(NotebookRunnerHandler):
     def _get_inspector(self, kernel, config):
         try:
-            inspection_package = __name__.rsplit('.', 2)[0] + ".inspection"
-            inspector_module = importlib.import_module(f'..backend.inspection.{kernel}',
-                package=inspection_package)
+            inspector_module = importlib.import_module(
+                f'.inspection.{kernel}', package="disjotter")
 
             return inspector_module.inspector()
         except ModuleNotFoundError:
