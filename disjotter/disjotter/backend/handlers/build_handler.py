@@ -58,6 +58,8 @@ class BuildHandler(BaseHandler):
             nested_levels = len(__name__.split('.')) - 1
             module_path = os.path.join(dirname + '/..' * nested_levels)
 
+            print(">>>copying ", module_path, flush=True)
+
             #  Copy helper to build context.
             shutil.copytree(module_path, 
                 tmpdir + "/disjotter/",
@@ -73,7 +75,6 @@ class BuildHandler(BaseHandler):
             with open(tmpdir + "/.dockerignore", "a") as ignore:
                 ignore.write("**/backend\n")
                 ignore.write("**/frontend\n")
-                print('docker ignroe haha123123')
 
             cc = ContainerCreator(tmpdir, image_name, base_image)
 
