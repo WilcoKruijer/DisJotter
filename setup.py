@@ -18,7 +18,7 @@ except FileNotFoundError:
 
 setuptools.setup(
     name="DisJotter",
-    version="1.0.2",
+    version="1.0.3",
     author="Wilco Kruijer",
     author_email="wilcokruijer@gmail.com",
     description=short_desc,
