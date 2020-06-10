@@ -1,4 +1,3 @@
 recursive-include disjotter/frontend *.js
 recursive-include disjotter/backend/templates *.html
-include requirements.txt
-include helper_requirements.txt
+recursive-include disjotter *.txt

@@ -25,9 +25,7 @@ def create_config(notebook_path, cell_index, variables):
 
 
 class BuildHandler(BaseHandler):
-    def post(self, path):
-        print("Buldhandler! ", path)
-        
+    def post(self, path):        
         notebook = self.contents_manager.get(path, content=True)
         notebook_path = os.path.join(os.getcwd(), path)
 
@@ -35,13 +33,10 @@ class BuildHandler(BaseHandler):
 
         body = self.get_json_body()
 
-        print('bod', body)
-
         image_name = body.get('imageName')
         base_image = body.get('baseImage')
         cell_index = int(body.get('cellIndex'))
         variables = body.get('variables', {})
-        print('vars', variables)
 
         if image_name is None or base_image is None or cell_index is None:
             raise HTTPError(400, 'abc')
@@ -55,10 +50,8 @@ class BuildHandler(BaseHandler):
             #  Find the location of the DisJotter module on disk
             #  So it can copy & install it in the container.
             dirname = os.path.dirname(__file__)
-            nested_levels = len(__name__.split('.')) - 1
+            nested_levels = len(__name__.split('.')) - 2
             module_path = os.path.join(dirname + '/..' * nested_levels)
-
-            print(">>>copying ", module_path, flush=True)
 
             #  Copy helper to build context.
             shutil.copytree(module_path, 

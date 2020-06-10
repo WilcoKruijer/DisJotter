@@ -41,13 +41,11 @@ class CommandHandler(BaseHandler):
 
     def _run(self, image_name):
         body = self.get_json_body()
-        print('bod', body)
         port = self._int_body('port', 10000)
 
         if port is None:
             raise HTTPError(400, 'def')
 
-        print('pot', port)
 
         cc = ContainerCreator('.', image_name, None)
         container = cc.run_container(port)

@@ -1,21 +1,16 @@
 def _jupyter_server_extension_paths():
     return [{
-        "name": "testing",
+        "name": "DisJotter",
         "module": "disjotter",
-        "module_name": "disjotter",
-        "label": "Do Docker",
-        "group": "download",
+        "module_name": "disjotter"
     }]
 
 
 def _jupyter_nbextension_paths():
     return [dict(
         section="notebook",
-        # the path is relative to the `my_fancy_module` directory
         src="frontend",
-        # directory in the `nbextension/` namespace
         dest="disjotter",
-        # _also_ in the `nbextension/` namespace
         require="disjotter/index")]
 
 
