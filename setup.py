@@ -6,19 +6,15 @@ from shutil import copyfile
 short_desc = "DisJotter allows the user to interactively create a Docker image from a Jupyter Notebook."
 
 try:
-    with open("../README.md", "r") as fh:
-        with open("./README.md", "a") as rm:
-            text = fh.read()
-            rm.write(text)
-
-        long_description = text
+    with open("./README.md", "r") as rm:
+        long_description = rm.read()
 except FileNotFoundError:
     long_description = short_desc
 
 
 setuptools.setup(
     name="DisJotter",
-    version="1.0.3",
+    version="1.0.4",
     author="Wilco Kruijer",
     author_email="wilcokruijer@gmail.com",
     description=short_desc,
@@ -38,8 +34,3 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
 )
-
-try:
-    os.remove("./README.md")
-except:
-    pass
