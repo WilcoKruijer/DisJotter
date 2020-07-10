@@ -17,6 +17,7 @@ Among other things, DisJotter is useful for reusing notebook components in workf
 DisJotter can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension to have any effect.
 
 ```bash
+$ [sudo] apt install jupyter-core
 $ [sudo] pip install disjotter
 $ jupyter serverextension enable --py disjotter
 $ jupyter nbextension install --py disjotter
