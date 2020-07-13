@@ -192,7 +192,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         formElements['build'] = document.getElementById("disjotter-build");
         formElements['run'] = document.getElementById("disjotter-run");
-        formElements['validate'] = document.getElementById("disjotter-validate");
+        formElements['validate'] = document.getElementById("disjotter-about");
 
         Object.keys(buttonElements).forEach(k => {
             buttonElements[k].onclick = () => switchTab(k);

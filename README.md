@@ -1,12 +1,8 @@
 ![PyPI - License](https://img.shields.io/pypi/l/disjotter) ![PyPI](https://img.shields.io/pypi/v/disjotter)
 
 # DisJotter
-Jotter [noun]: "a small pad or notebook used for notes or jottings."
 
-Researchers use Jupyter Notebooks to rapidly prototype their experiments. After experimenting locally, cloud infrastructure is commonly used to scale experiments to larger data sets. DisJotter, is a tool that integrates into the Jupyter Notebook environment. Researchers can utilize DisJotter to interactively create a containerized service from their notebook. Our tool improves the FAIRness of notebooks and enables them to scale to larger workflows.
-
-
-DisJotter is a Jupyter Notebook extension that allows the user to interactively create a Docker image from a Jupyter Notebook. DisJotter can be used to generate Docker images from single cells of a Jupyter Notebook. The generated image will run a web service that will output the specified cell. This includes image outputs like plots. Code introspection for Python enables the services to change cell output at service run-time.
+DisJotter is a Jupyter Notebook extension that allows the user to interactively create a Docker image from a Jupyter Notebook. Our tool can be used to generate Docker images from single cells of a Jupyter Notebook. The generated image will run a web service that will output the specified cell. This includes image outputs like plots. Code introspection for Python enables the services to change cell output at service run-time.
 
 Among other things, DisJotter is useful for reusing notebook components in workflows that support web services. 
 
@@ -17,7 +13,6 @@ Among other things, DisJotter is useful for reusing notebook components in workf
 DisJotter can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension to have any effect.
 
 ```bash
-$ [sudo] apt install jupyter-core
 $ [sudo] pip install disjotter
 $ jupyter serverextension enable --py disjotter
 $ jupyter nbextension install --py disjotter
