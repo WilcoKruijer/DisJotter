@@ -12,10 +12,11 @@ FAIR-Cells
  can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension to have any effect.
 
 ```bash
-$ [sudo] pip install fair-cells
-$ jupyter serverextension enable --py fair-cells
-$ jupyter nbextension install --py fair-cells
-$ jupyter nbextension enable --py fair-cells
+$ [sudo] pip install jupyter
+$ [sudo] pip install FAIR-Cells
+$ jupyter serverextension enable --py FAIR-Cells
+$ jupyter nbextension install --py FAIR-Cells
+$ jupyter nbextension enable --py FAIR-Cells
 ```
 
 #### Development
