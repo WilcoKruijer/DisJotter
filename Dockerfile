@@ -3,11 +3,11 @@ FROM jupyter/base-notebook
 USER root
 
 RUN pip install --upgrade pip
-RUN pip install jupyter --user
-RUN pip install fair-cells --user
-RUN jupyter serverextension enable --py fair-cells --user
-RUN jupyter nbextension install --py fair-cells --user
-RUN jupyter nbextension enable fair-cells --user --py
+RUN pip install jupyter
+RUN pip install fair-cells
+RUN jupyter serverextension enable --py fair-cells
+RUN jupyter nbextension install --py fair-cells
+RUN jupyter nbextension enable fair-cells --py
 
 EXPOSE 8888
 
