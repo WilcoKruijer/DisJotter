@@ -1,3 +1,3 @@
-recursive-include disjotter/frontend *.js
-recursive-include disjotter/backend/templates *.html
-recursive-include disjotter *.txt
+recursive-include fair-cells/frontend *.js
+recursive-include fair-cells/backend/templates *.html
+recursive-include fair-cells *.txt
