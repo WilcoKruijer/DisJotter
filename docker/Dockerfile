@@ -2,6 +2,8 @@ FROM jupyter/base-notebook
 
 USER root
 
+RUN pip install --upgrade pip
+
 EXPOSE 8888
 
 WORKDIR /notebooks/
