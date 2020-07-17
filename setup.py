@@ -3,7 +3,7 @@ import os
 from shutil import copyfile
 
 
-short_desc = "DisJotter allows the user to interactively create a Docker image from a Jupyter Notebook."
+short_desc = "FAIR-Cells allows the user to interactively create a Docker image from a Jupyter Notebook."
 
 try:
     with open("./README.md", "r") as rm:
@@ -13,14 +13,14 @@ except FileNotFoundError:
 
 
 setuptools.setup(
-    name="DisJotter",
+    name="FAIR-Cells",
     version="1.0.4",
     author="Wilco Kruijer",
     author_email="wilcokruijer@gmail.com",
     description=short_desc,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/WilcoKruijer/DisJotter",
+    url="https://github.com/QCDIS/FAIRCells",
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=[

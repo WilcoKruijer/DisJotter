@@ -16,7 +16,7 @@ services:
             context: .
             dockerfile: ./docker/helper.Dockerfile
         volumes:
-            - ./disjotter:/src/disjotter
+            - ./fair-cells:/src/fair-cells
             - ./docker/helper_dummy:/src
         ports:
             - "10000:8888"
