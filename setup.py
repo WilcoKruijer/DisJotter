@@ -14,9 +14,9 @@ except FileNotFoundError:
 
 setuptools.setup(
     name="FAIR-Cells",
-    version="1.0.5",
-    author="Wilco Kruijer, S. Koulouzis",
-    author_email="wilcokruijer@gmail.com, S.Koulouzis@uva.nl",
+    version="1.0.8",
+    author="Wilco Kruijer, Zhiming Zhao",
+    author_email="Z.Zhao@uva.nl",
     description=short_desc,
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -29,7 +29,7 @@ setuptools.setup(
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
