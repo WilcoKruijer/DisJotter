@@ -1,3 +1,8 @@
+Note: DisJotter is not currently being maintained. It has been forked as 'FAIR-Cells', which is available at:
+
+https://github.com/QCDIS/FAIRCells and https://pypi.org/project/FAIR-Cells/
+
+
 ![PyPI - License](https://img.shields.io/pypi/l/disjotter) ![PyPI](https://img.shields.io/pypi/v/disjotter)
 
 # DisJotter

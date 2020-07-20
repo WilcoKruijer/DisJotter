@@ -14,7 +14,7 @@ except FileNotFoundError:
 
 setuptools.setup(
     name="DisJotter",
-    version="1.0.4",
+    version="1.0.5",
     author="Wilco Kruijer",
     author_email="wilcokruijer@gmail.com",
     description=short_desc,
@@ -29,7 +29,7 @@ setuptools.setup(
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
