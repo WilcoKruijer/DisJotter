@@ -1,0 +1,42 @@
+<style>
+    #variable-inspector {
+        padding: 1em 0;
+    }
+
+    #variable-header,
+    #variable-item {
+        display: flex;
+        align-items: center;
+    }
+
+    #variable-header > p {
+        font-weight: bold;
+    }
+
+    #variable-header > p,
+    #variable-item > p,
+    #variable-item > input {
+        flex: 1 0 80px;
+        text-align: center;
+    }
+
+</style>
+<p>Variables:</p>
+<div id="variable-inspector">
+    <div id="variable-header">
+        <p>Variable</p>
+        <p>Query</p>
+        <p>Post</p>
+        <p>Disabled</p>
+    </div>
+    <div id="variable-list">
+        {% for idx, variable in enumerate(variables) %}
+        <div id="variable-item">
+            <p>{{ variable }}</p>
+            <input type="radio"  name="var-{{idx}}" data-variable="{{ variable }}" value="query"></input>
+            <input type="radio"  name="var-{{idx}}" data-variable="{{ variable }}" value="post"></input>
+            <input type="radio"  name="var-{{idx}}" data-variable="{{ variable }}" value="disabled" checked></input>
+        </div>
+        {% end %}
+    </div>
+</div>

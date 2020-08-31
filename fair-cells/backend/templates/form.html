@@ -1,0 +1,148 @@
+<style>
+    .hide {
+        display: none
+    }
+
+    #fair-cells-form {
+        padding: 1em 0 2em 0;
+    }
+    #fair-cells-form h4 {
+        margin: 0;
+        padding: 0 0 0.5em 1em;
+    }
+    .flex-outer {
+        padding: 0;
+    }
+    .flex-outer li {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0 2em;
+    }
+    .flex-outer > li > label,
+    .flex-outer > li > p {
+    /* .flex-outer > li > div { */
+        flex: 1 0 120px;
+        max-width: 220px;
+    }
+    #cell-preview {
+        margin: 0.75em 0;
+    }
+    .divider {
+        border-top: 1px solid #e5e5e5;
+        margin-top: 2em;
+        padding-top: 1em;
+    }
+    .modal-body {
+        padding: 0 !important;
+    }
+</style>
+
+<ul id="tabs" class="nav nav-tabs">
+    <li id="btn-tab-build" class="active">
+        <a href="#build" data-toggle="tab">Build</a>
+    </li>
+    <li id="btn-tab-run">
+        <a href="#run" data-toggle="tab">Run</a>
+    </li>
+    <li id="btn-tab-validate">
+        <a href="#validate" data-toggle="tab">About</a>
+    </li>
+</ul>
+
+<form id="fair-cells-form">
+    <ul id="fair-cells-build" class="flex-outer">
+        <h4>Build</h4>
+        <li>
+            <label for="image-name">Image name:</label>
+            <input id="image-name" value="nb_helper"/>
+        </li>
+        <li>
+            <label for="base-image">Base image:</label>
+            <select id="base-image" name="base-image" form="create-form">
+                {% for display, image in images %}
+                    <option value="{{ image }}">{{ display }}</option>
+                {% end %}
+            </select>
+        </li>
+        <li>
+            <label for="cell-index">Cell:</label>
+            <select id="cell-index" form="create-form">
+                
+            </select>
+            
+        </li>
+        <li>
+            <p>Preview:</p>
+            <div id="cell-preview"></div>
+        </li>
+        <li>
+            <label for="environment-area">Conda environment.yml:</label>
+            <textarea id="environment-area" cols="50" rows="7" type="textarea"></textarea>
+        </li>
+        <li id="kernel-specific">
+        </li>
+        <li>
+            <p>
+                <input id="build-button" type="submit" value="Build"/>
+            </p>
+            <p id="build-notify"></p>
+        </li>
+        <li>
+            <p>Build logs:</p>
+            <textarea id="build-output" cols="50" rows="5" type="textarea" disabled></textarea>
+        </li>
+    </ul>
+
+    <ul id="fair-cells-run" class="flex-outer hide">
+        <h4>Run</h4>
+        <li>
+            <label for="run-port">Port:</label>
+            <input id="run-port" value="10000" type="number"/>
+        </li>
+        <li>
+            <label for="container-status">Status:</label>
+            <input id="container-status" value="idle" type="text" disabled/>
+        </li>
+        <li>
+            <div>
+                <input id="run-button" type="submit" value="Run"/>
+                <input id="status-button" type="submit" value="Status"/>
+                <input id="stop-button" type="submit" value="Stop"/>
+            </div>
+        </li>
+    </ul>
+    <ul id="fair-cells-about" class="flex-outer hide">
+        <h4>About</h4>
+
+        <p style="margin-left: 5%;">
+            FAIR-Cells is developed by the research team for Quality Critical Distributed Computing (QCDIS) in the
+            Multi Scale Networking System Group (MNS) of the University of Amsterdam. The development of FAIR-Cells is
+            coordinated by Dr. Zhiming Zhao: <a href="mailto:z.zhao@uva.nl">z.zhao@uva.nl</a></p>
+
+        <p style="margin-top: 5%;margin-left: 5%;">
+            Developers:
+        <li style="margin-left: 5%;">
+            W. Kruijer <a href="mailto:wilcokruijer@gmail.com">wilcokruijer@gmail.com</a>
+        </li>
+        <li style="margin-left: 5%;">
+            S. Koulouzis <a href="mailto:S.Koulouzis@uva.nl">S.Koulouzis@uva.nl</a>
+        </li>
+        </p>
+
+        <p style="text-align:right;margin-right: 5%;">
+
+            <img src="https://mns-research.nl/images/logo_hua931301caa9e2c039e68fbb874deb22a_17897_0x70_resize_lanczos_2.png" alt="MnS"  width="15%" height="15%">
+            <img src="https://bynder-public-eu-central-1.s3.amazonaws.com/media/9E3E0032-62BD-4694-A3CCB1BC17CA3CAF/820AE599-3321-4FD3-96AAF5D0926A84C2/webimage-ED0F2C5B-4DB7-4916-8A9990566EFDA309.png" alt="UvA" width="10%" height="10%">
+
+<!--            <img src="https://www.lifewatch.eu/image/journal/article?img_id=1307465&t=1542636417563" alt="LifeWatch"  width="80" height="50">-->
+<!--            <img src="https://envri.eu/wp-content/uploads/2019/10/envri_logo_final-1.jpg" alt="envri"  width="80" height="50">-->
+        </p>
+    </ul>
+
+
+
+
+
+
+</form>
