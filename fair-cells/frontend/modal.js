@@ -5,7 +5,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     const dialog = require('base/js/dialog');
     const { jsonRequest } = require("./util");
 
-    const formPromise = fetch('/dj/templates/form.html').then(resp => resp.text());
+    const formPromise = fetch('/fair-cells/templates/form.html').then(resp => resp.text());
 
     const formElements = {};
     const buttonElements = {};
@@ -26,6 +26,10 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             buildButton: document.getElementById('build-container-button'),
             buildOutput: document.getElementById('build-output'),
             buildNotify: document.getElementById('build-notify'),
+
+            buildDockerfileButton: document.getElementById('build-dockerfile-button'),
+            buildDockerFileOutput: document.getElementById('build-dockerfile-output'),
+            buildDockerFileNotify: document.getElementById('build-dockerfile-notify'),
 
             runButton: document.getElementById('run-button'),
             statusButton: document.getElementById('status-button'),
@@ -72,7 +76,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
                 elms.cellPreview.innerHTML = '<p>Output not rendered.</p>';
             }
 
-            const inspectorResp = await fetch(`/dj/notebook/${notebook.path}/inspect/inspector.html?cellIdx=${idx}`);
+            const inspectorResp = await fetch(`/fair-cells/notebook/${notebook.path}/inspect/inspector.html?cellIdx=${idx}`);
             if (inspectorResp.status === 501) {
                 // No inspector for this Kernel
                 return;
@@ -86,6 +90,48 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         elms.cellSelector.onchange(null);
     }
+    const handlebuildDockerfileButtonClick = async (e) => {
+        e.preventDefault();
+
+        elms.buildDockerfileButton.value = 'Building...';
+        elms.buildDockerfileButton.disabled = true;
+        elms.buildDockerFileOutput.value = '';
+
+        const variables = {};
+        document.querySelectorAll(`input[data-variable]:checked`).forEach(elm => {
+            variables[elm.dataset.variable] = elm.value
+        })
+
+        let timeoutId = setTimeout(() => {
+            elms.buildNotify.innerHTML = "This might take a while..."
+
+            timeoutId = setTimeout(() => {
+                elms.buildNotify.innerHTML = "Especially the first time ..."
+            }, 5000)
+        }, 5000)
+
+        const res = await jsonRequest('GET', `/fair-cells/notebook/${notebook.path}/build`, {
+            imageName: elms.imageNameInput.value,
+            baseImage: elms.baseImageSelector.value,
+            cellIndex: elms.cellSelector.value,
+            environment: elms.environmentArea.value,
+            variables: variables
+        })
+
+        clearTimeout(timeoutId);
+        elms.buildNotify.innerHTML = ""
+
+        if (res.status !== 200) {
+            return alert(await res.text())
+        }
+
+        const data = await res.json()
+
+        elms.buildButton.value = 'Build';
+        elms.buildButton.disabled = false;
+        elms.buildOutput.value = data['logs']
+    }
+
 
     const handlebuildContainerButtonClick = async (e) => {
         e.preventDefault();
@@ -107,7 +153,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             }, 5000)
         }, 5000)
 
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/build`, {
+        const res = await jsonRequest('POST', `/fair-cells/notebook/${notebook.path}/build`, {
             imageName: elms.imageNameInput.value,
             baseImage: elms.baseImageSelector.value,
             cellIndex: elms.cellSelector.value,
@@ -136,7 +182,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.runButton.disabled = true;
 
         const imageName = elms.imageNameInput.value;
-        const res = await jsonRequest('POST', `/dj/image/${imageName}/command/run`, {
+        const res = await jsonRequest('POST', `/fair-cells/image/${imageName}/command/run`, {
             port: Number(elms.runPortInput.value)
         })
 
@@ -156,7 +202,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         e.preventDefault();
 
         const imageName = elms.imageNameInput.value;
-        const res = await jsonRequest('GET', `/dj/image/${imageName}/command/status`)
+        const res = await jsonRequest('GET', `/fair-cells/image/${imageName}/command/status`)
 
         if (res.status !== 200) {
             return alert(await res.text())
@@ -171,7 +217,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         e.preventDefault();
 
         const imageName = elms.imageNameInput.value;
-        const res = await jsonRequest('POST', `/dj/image/${imageName}/command/stop`)
+        const res = await jsonRequest('POST', `/fair-cells/image/${imageName}/command/stop`)
 
         if (res.status !== 200) {
             return alert(await res.text())
@@ -206,11 +252,12 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
 
         elms.buildButton.onclick = handlebuildContainerButtonClick;
+        elms.buildDockerfileButton.onclick = handlebuildDockerfileButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
         elms.statusButton.onclick = handleStatusButtonClick;
         elms.stopButton.onclick = handleStopButtonClick;
 
-        const res = await jsonRequest('GET', `/dj/notebook/${notebook.path}/environment`)
+        const res = await jsonRequest('GET', `/fair-cells/notebook/${notebook.path}/environment`)
 
         if (!res.ok) {
             return alert(await res.text());
