@@ -23,7 +23,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
             runPortInput: document.getElementById('run-port'),
 
-            buildButton: document.getElementById('build-button'),
+            buildButton: document.getElementById('build-container-button'),
             buildOutput: document.getElementById('build-output'),
             buildNotify: document.getElementById('build-notify'),
 
@@ -87,7 +87,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.cellSelector.onchange(null);
     }
 
-    const handlebuildButtonClick = async (e) => {
+    const handlebuildContainerButtonClick = async (e) => {
         e.preventDefault();
 
         elms.buildButton.value = 'Building...';
@@ -205,7 +205,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         setCellSelectOptions(elms.cellSelector, elms.cellPreview);
 
 
-        elms.buildButton.onclick = handlebuildButtonClick;
+        elms.buildButton.onclick = handlebuildContainerButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
         elms.statusButton.onclick = handleStatusButtonClick;
         elms.stopButton.onclick = handleStopButtonClick;
