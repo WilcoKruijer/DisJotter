@@ -19,7 +19,8 @@ def load_jupyter_server_extension(nbapp):
 
     from .backend.handlers.environment_handler import EnvironmentHandler
     from .backend.handlers.template_handler import TemplateHandler
-    from .backend.handlers.build_handler import BuildContainerHandler
+    from .backend.handlers.build_handler import BuildHandler
+    from .backend.handlers.build_docker_file_handler import BuildDockerFileHandler
     from .backend.handlers.command_handler import CommandHandler
     from .backend.handlers.inspect_handler import InspectHandler
 
@@ -29,15 +30,17 @@ def load_jupyter_server_extension(nbapp):
     base = web_app.settings['base_url']
 
     host_pattern = '.*$'
-    build_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/build')
-    image_command_pattern = url_path_join(base, '/fair-cells/image/(.*)/command/(.*)')
-    environment_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/environment')
-    inspect_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/inspect/(.*)')
+    build_pattern = url_path_join(base, '/dj/notebook/(.*)/build')
+    build_docker_file_pattern = url_path_join(base, '/dj/notebook/(.*)/build_docker_file')
+    image_command_pattern = url_path_join(base, '/dj/image/(.*)/command/(.*)')
+    environment_pattern = url_path_join(base, '/dj/notebook/(.*)/environment')
+    inspect_pattern = url_path_join(base, '/dj/notebook/(.*)/inspect/(.*)')
 
-    template_pattern = url_path_join(base, r'/fair-cells/templates/(.*\.(?:html|js|css))')
+    template_pattern = url_path_join(base, r'/dj/templates/(.*\.(?:html|js|css))')
 
     web_app.add_handlers(host_pattern, [
-        (build_pattern, BuildContainerHandler),
+        (build_pattern, BuildHandler),
+        (build_docker_file_pattern, BuildDockerFileHandler),
         (image_command_pattern, CommandHandler),
         (environment_pattern, EnvironmentHandler),
         (inspect_pattern, InspectHandler),

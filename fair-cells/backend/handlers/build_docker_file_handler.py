@@ -24,7 +24,8 @@ def create_config(notebook_path, cell_index, variables):
     })
 
 
-class BuildHandler(BaseHandler):
+class BuildDockerFileHandler(BaseHandler):
+
     def post(self, path):        
         notebook = self.contents_manager.get(path, content=True)
         notebook_path = os.path.join(os.getcwd(), path)
@@ -54,7 +55,7 @@ class BuildHandler(BaseHandler):
             module_path = os.path.join(dirname + '/..' * nested_levels)
 
             #  Copy helper to build context.
-            shutil.copytree(module_path, 
+            shutil.copytree(module_path,
                 tmpdir + "/fair-cells/",
                 ignore=shutil.ignore_patterns('.ipynb_checkpoints', '__pycache__'))
 
@@ -70,15 +71,12 @@ class BuildHandler(BaseHandler):
                 ignore.write("**/frontend\n")
 
             cc = ContainerCreator(tmpdir, image_name, base_image)
+            docker_file = cc.get_dockerfile()
 
-            try:
-                _, log = cc.build_container(cc.get_dockerfile())
-            except docker.errors.BuildError as be:
-                log = be.build_log
-
-        logs = "".join([l['stream'] if 'stream' in l else '' for l in log])
-    
 
         self.finish(json.dumps({
-            'logs': logs
+            'dockerFile': docker_file
         }))
+
+
+
