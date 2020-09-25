@@ -24,8 +24,10 @@ def create_config(notebook_path, cell_index, variables):
     })
 
 
-class BuildHandler(BaseHandler):
-    def post(self, path):        
+class BuildContainerHandler(BaseHandler):
+
+    def post(self, path):
+        print(path)
         notebook = self.contents_manager.get(path, content=True)
         notebook_path = os.path.join(os.getcwd(), path)
 
@@ -82,51 +84,4 @@ class BuildHandler(BaseHandler):
         self.finish(json.dumps({
             'logs': logs
         }))
-
-    def get(self, path):
-        notebook = self.contents_manager.get(path, content=True)
-        notebook_path = os.path.join(os.getcwd(), path)
-
-        notebook_name = "notebook.ipynb"
-
-        body = self.get_json_body()
-
-        image_name = body.get('imageName')
-        base_image = body.get('baseImage')
-        cell_index = int(body.get('cellIndex'))
-        variables = body.get('variables', {})
-
-        if image_name is None or base_image is None or cell_index is None:
-            raise HTTPError(400, 'abc')
-
-        requirements = body.get('environment', BASE_STRING)
-
-        #  Create a temporary dir which will be our build context.
-        with tempfile.TemporaryDirectory() as tmpdir:
-            shutil.copyfile(notebook_path, tmpdir + "/" + notebook_name)
-
-            #  Find the location of the FAIR-Cells module on disk
-            #  So it can copy & install it in the container.
-            dirname = os.path.dirname(__file__)
-            nested_levels = len(__name__.split('.')) - 2
-            module_path = os.path.join(dirname + '/..' * nested_levels)
-
-            #  Copy helper to build context.
-            shutil.copytree(module_path,
-                            tmpdir + "/fair-cells/",
-                            ignore=shutil.ignore_patterns('.ipynb_checkpoints', '__pycache__'))
-
-            with open(tmpdir + "/environment.yml", "a") as reqs:
-                reqs.write(requirements)
-
-            with open(tmpdir + "/nb_helper_config.json", "a") as cfg:
-                config = create_config(notebook_name, cell_index, variables)
-                cfg.write(config)
-
-            with open(tmpdir + "/.dockerignore", "a") as ignore:
-                ignore.write("**/backend\n")
-                ignore.write("**/frontend\n")
-
-            cc = ContainerCreator(tmpdir, image_name, base_image)
-            cc.get_dockerfile()
 
