@@ -16,6 +16,10 @@ from .base_handler import BaseHandler
 from .environment_handler import BASE_STRING
 
 
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
 def create_config(notebook_path, cell_index, variables):
     return json.dumps({
         'path': notebook_path,
@@ -69,6 +73,7 @@ class BuildHandler(BaseHandler):
                 ignore.write("**/backend\n")
                 ignore.write("**/frontend\n")
 
+            logging.debug("image_name: " + str(image_name))
             cc = ContainerCreator(tmpdir, image_name, base_image)
 
             try:
