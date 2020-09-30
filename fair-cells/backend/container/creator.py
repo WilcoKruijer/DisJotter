@@ -9,6 +9,11 @@ import string
 import docker
 
 
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+
 #  Small hack so we can use a dockerfile string instead of having to write it
 #  to disk first. See:
 #  https://github.com/docker/docker-py/issues/2105#issuecomment-613685891
@@ -51,6 +56,7 @@ class ContainerCreator:
         os.chdir(self.folder)
 
         try:
+            logging.debug("dockerfile: "+str(dockerfile))
             image, log = self.client.images.build(tag=self.name, 
                                             path='.',
                                             dockerfile=dockerfile,
