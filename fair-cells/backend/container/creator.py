@@ -8,6 +8,7 @@ import string
 
 import docker
 
+import traceback
 
 import logging
 logger = logging.getLogger()
@@ -54,13 +55,16 @@ class ContainerCreator:
         #  Save working directory so we can reset it later
         wd = os.getcwd()
         os.chdir(self.folder)
-
+        logging.info("getcwd: " + str(wd))
         try:
-            logging.debug("dockerfile: "+str(dockerfile))
+            logging.info("dockerfile: "+str(dockerfile))
+            logging.info("Start building container")
             image, log = self.client.images.build(tag=self.name, 
                                             path='.',
                                             dockerfile=dockerfile,
                                             rm=True)
+        except Exception as e:
+            logging.error(traceback.format_exc())
         finally:
             #  Change back
             os.chdir(wd)
