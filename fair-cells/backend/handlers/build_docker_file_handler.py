@@ -15,6 +15,10 @@ from ..container.creator import ContainerCreator
 from .base_handler import BaseHandler
 from .environment_handler import BASE_STRING
 
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
 
 def create_config(notebook_path, cell_index, variables):
     return json.dumps({
@@ -38,7 +42,10 @@ class BuildDockerFileHandler(BaseHandler):
         base_image = body.get('baseImage')
         cell_index = int(body.get('cellIndex'))
         variables = body.get('variables', {})
-
+        logging.info("image_name: " + str(image_name))
+        logging.info("base_image: " + str(base_image))
+        logging.info("cell_index: " + str(cell_index))
+        logging.info("variables: " + str(variables))
         if image_name is None or base_image is None or cell_index is None:
             raise HTTPError(400, 'abc')
 
