@@ -23,9 +23,13 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
             runPortInput: document.getElementById('run-port'),
 
-            buildButton: document.getElementById('build-button'),
+            buildButton: document.getElementById('build-container-button'),
             buildOutput: document.getElementById('build-output'),
             buildNotify: document.getElementById('build-notify'),
+
+            buildDockerfileButton: document.getElementById('build-dockerfile-button'),
+            buildDockerFileOutput: document.getElementById('build-dockerfile-output'),
+            buildDockerFileNotify: document.getElementById('build-dockerfile-notify'),
 
             runButton: document.getElementById('run-button'),
             statusButton: document.getElementById('status-button'),
@@ -87,10 +91,52 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.cellSelector.onchange(null);
     }
 
-    const handlebuildButtonClick = async (e) => {
+    const handleBuildDockerFileButtonClick = async (e) => {
         e.preventDefault();
 
-        elms.buildButton.value = 'Building...';
+        elms.buildDockerfileButton.value = 'Building Dockerfile...';
+        elms.buildDockerfileButton.disabled = true;
+        elms.buildDockerFileOutput.value = '';
+
+        const variables = {};
+        document.querySelectorAll(`input[data-variable]:checked`).forEach(elm => {
+            variables[elm.dataset.variable] = elm.value
+        })
+
+        let timeoutId = setTimeout(() => {
+            elms.buildNotify.innerHTML = "This might take a while..."
+
+            timeoutId = setTimeout(() => {
+                elms.buildNotify.innerHTML = "Especially the first time ..."
+            }, 5)
+        }, 5)
+
+        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/build_docker_file`, {
+            imageName: elms.imageNameInput.value,
+            baseImage: elms.baseImageSelector.value,
+            cellIndex: elms.cellSelector.value,
+            environment: elms.environmentArea.value,
+            variables: variables
+        })
+
+        clearTimeout(timeoutId);
+        elms.buildNotify.innerHTML = ""
+
+        if (res.status !== 200) {
+            return alert(await res.text())
+        }
+
+        const data = await res.json()
+
+        elms.buildDockerfileButton.value = 'Build Dockerfile';
+        elms.buildDockerfileButton.disabled = false;
+        elms.buildDockerFileOutput.value = data['dockerFile']
+    }
+
+    const handlebuildContainerButtonClick = async (e) => {
+        e.preventDefault();
+
+        elms.buildButton.value = 'Building Container...';
         elms.buildButton.disabled = true;
         elms.buildOutput.value = '';
 
@@ -190,9 +236,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         buttonElements['run'] = document.getElementById("btn-tab-run");
         buttonElements['validate'] = document.getElementById("btn-tab-validate");
 
-        formElements['build'] = document.getElementById("disjotter-build");
-        formElements['run'] = document.getElementById("disjotter-run");
-        formElements['validate'] = document.getElementById("disjotter-about");
+        formElements['build'] = document.getElementById("fair-cells-build");
+        formElements['run'] = document.getElementById("fair-cells-run");
+        formElements['validate'] = document.getElementById("fair-cells-about");
 
         Object.keys(buttonElements).forEach(k => {
             buttonElements[k].onclick = () => switchTab(k);
@@ -205,7 +251,8 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         setCellSelectOptions(elms.cellSelector, elms.cellPreview);
 
 
-        elms.buildButton.onclick = handlebuildButtonClick;
+        elms.buildButton.onclick = handlebuildContainerButtonClick;
+        elms.buildDockerfileButton.onclick = handleBuildDockerFileButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
         elms.statusButton.onclick = handleStatusButtonClick;
         elms.stopButton.onclick = handleStopButtonClick;
@@ -223,7 +270,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         openFormHandler: async () => {
             const formHtml = await formPromise;
     
-            dialog.modal({title: 'DisJotter', 
+            dialog.modal({title: 'FAIR-Cells',
                 keyboard_manager: Jupyter.keyboard_manager, 
                 body: () => formHtml, 
                 open: onOpen

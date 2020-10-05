@@ -8,17 +8,17 @@ define(["require", "base/js/namespace", "./modal"], function (require) {
         load_ipython_extension: () => {
             const action = {
                 icon: 'fa-comment-o', // a font-awesome class used on buttons, etc
-                help: 'Launch the DisJotter wizard',
+                help: 'Launch the FAIR-Cells wizard',
                 help_index: 'zz',
                 handler: modal.openFormHandler
             };
-            const prefix = 'disjotter';
+            const prefix = 'fair-cells';
             const action_name = 'show-alert';
         
             const actionName = Jupyter.actions.register(action, action_name, prefix); // returns 'my_extension:show-alert'
             Jupyter.toolbar.add_buttons_group([actionName]);
             
-            console.log('DisJotter front-end loaded')
+            console.log('FAIR-Cells front-end loaded')
         }
     }
 });

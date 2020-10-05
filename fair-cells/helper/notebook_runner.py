@@ -5,6 +5,23 @@ from queue import Empty
 
 from jupyter_client import manager as kernel_manager, kernelspec
 
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# add formatter to ch
+ch.setFormatter(formatter)
+
+# add ch to logger
+logger.addHandler(ch)
 
 class NotebookRunner:
     def __init__(self, notebook_path):
@@ -31,6 +48,7 @@ class NotebookRunner:
         self.client.shutdown()
 
     def execute_code_and_wait(self, command):
+        logger.info('execute_code_and_wait, command: '+command)
         cmd_id = self.client.execute(command)
 
         state = 'busy'
@@ -67,6 +85,7 @@ class NotebookRunner:
                 elif msg_type == 'error':
                     ret_content['error'] = content
             except Empty:
+                logger.info('except Empty:')
                 return {}
 
         return ret_content
@@ -76,6 +95,7 @@ class NotebookRunner:
 
     def run_until(self, until_cell_idx=None) -> List[any]:
         results = []
+        logger.info('run_until')
         for idx, cell in enumerate(self.cells):
             if cell['cell_type'] == 'code':
                 if idx in self.run_before:

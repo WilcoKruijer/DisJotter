@@ -8,6 +8,12 @@ import string
 
 import docker
 
+import traceback
+
+import logging
+logger = logging.getLogger('ContainerCreator')
+logger.setLevel(logging.DEBUG)
+
 
 #  Small hack so we can use a dockerfile string instead of having to write it
 #  to disk first. See:
@@ -30,18 +36,18 @@ class ContainerCreator:
                 f'USER root',
                 f'WORKDIR /src/',
 
-                f'COPY ./disjotter/ /src/disjotter/',
-                f"RUN pip install -r /src/disjotter/helper/helper_requirements.txt",
+                f'COPY ./fair-cells/ /src/fair-cells/',
+                f"RUN pip install -r /src/fair-cells/helper/helper_requirements.txt",
 
                 f'COPY ./environment.yml /src/environment.yml',
-                f"RUN conda env update --quiet --file environment.yml --name base",
+                f"RUN conda env update --file environment.yml --name base",
 
                 f"USER $NB_UID",
 
                 f'COPY ./notebook.ipynb /src/notebook.ipynb',
                 f'COPY ./nb_helper_config.json /src/nb_helper_config.json',
 
-                f'ENTRYPOINT ["python", "-m", "disjotter"]'
+                f'ENTRYPOINT ["python", "-m", "fair-cells"]'
             ])
         )
 
@@ -49,16 +55,21 @@ class ContainerCreator:
         #  Save working directory so we can reset it later
         wd = os.getcwd()
         os.chdir(self.folder)
-
+        logging.info("getcwd: " + str(wd))
         try:
+            logging.info("dockerfile: "+str(dockerfile))
+            logging.info("Start building container. self.client.images.build")
             image, log = self.client.images.build(tag=self.name, 
                                             path='.',
                                             dockerfile=dockerfile,
-                                            rm=True)
+                                            rm=True,
+                                            nocache=True)
+        except Exception as e:
+            logging.error(traceback.format_exc())
         finally:
             #  Change back
             os.chdir(wd)
-
+        logging.info("Returning image and log: "+str(log))
         return image, log
 
   
@@ -68,7 +79,7 @@ class ContainerCreator:
             cont.stop(timeout=1)
         except docker.errors.NotFound:
             pass
-    
+        logging.info("containers.run name: "+self.name+" ports: "+str(port))
         return self.client.containers.run(self.name,
                     name=self.name,
                     ports={'8888': port},

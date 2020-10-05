@@ -11,7 +11,7 @@ from .util import get_config
 
 
 def start_helper():
-    print("DisJotter helper starting.\n", flush=True)
+    print("FAIR-Cells helper starting.\n", flush=True)
 
     try:
         config = get_config()

@@ -16,7 +16,7 @@ class InspectHandler(BaseHandler):
 
         try:
             inspector_module = importlib.import_module(
-                f'.inspection.{kernel}', package="disjotter")
+                f'.inspection.{kernel}', package="fair-cells")
 
             inspector = inspector_module.inspector()
             
