@@ -108,8 +108,8 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
             timeoutId = setTimeout(() => {
                 elms.buildNotify.innerHTML = "Especially the first time ..."
-            }, 5000)
-        }, 5000)
+            }, 5)
+        }, 5)
 
         const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/build_docker_file`, {
             imageName: elms.imageNameInput.value,

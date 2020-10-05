@@ -11,7 +11,7 @@ import docker
 import traceback
 
 import logging
-logger = logging.getLogger()
+logger = logging.getLogger('ContainerCreator')
 logger.setLevel(logging.DEBUG)
 
 
@@ -40,7 +40,7 @@ class ContainerCreator:
                 f"RUN pip install -r /src/fair-cells/helper/helper_requirements.txt",
 
                 f'COPY ./environment.yml /src/environment.yml',
-                f"RUN conda env update --quiet --file environment.yml --name base",
+                f"RUN conda env update --file environment.yml --name base",
 
                 f"USER $NB_UID",
 
@@ -58,17 +58,18 @@ class ContainerCreator:
         logging.info("getcwd: " + str(wd))
         try:
             logging.info("dockerfile: "+str(dockerfile))
-            logging.info("Start building container")
+            logging.info("Start building container. self.client.images.build")
             image, log = self.client.images.build(tag=self.name, 
                                             path='.',
                                             dockerfile=dockerfile,
-                                            rm=True)
+                                            rm=True,
+                                            nocache=True)
         except Exception as e:
             logging.error(traceback.format_exc())
         finally:
             #  Change back
             os.chdir(wd)
-
+        logging.info("Returning image and log: "+str(log))
         return image, log
 
   
@@ -78,7 +79,7 @@ class ContainerCreator:
             cont.stop(timeout=1)
         except docker.errors.NotFound:
             pass
-    
+        logging.info("containers.run name: "+self.name+" ports: "+str(port))
         return self.client.containers.run(self.name,
                     name=self.name,
                     ports={'8888': port},

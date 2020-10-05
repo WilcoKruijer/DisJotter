@@ -18,7 +18,7 @@ from .environment_handler import BASE_STRING
 
 import logging
 
-logger = logging.getLogger()
+logger = logging.getLogger('BuildHandler')
 logger.setLevel(logging.DEBUG)
 
 # create console handler and set level to debug
