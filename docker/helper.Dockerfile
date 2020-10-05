@@ -1,24 +1,11 @@
-FROM jupyter/base-notebook
-
+FROM jupyter/minimal-notebook
 USER root
-
-RUN apt update && apt upgrade -y && apt autoclean -y && apt autoremove -y
-
-
-EXPOSE 8888
-
 WORKDIR /src/
-
-COPY ./fair-cells/helper/helper_requirements.txt /src/fair-cells/helper/helper_requirements.txt
-COPY ./docker/helper_dummy/ /src/
-
-
-RUN pip install --use-feature=2020-resolver -r /src/fair-cells/helper/helper_requirements.txt
-RUN conda env update --quiet --file environment.yml --name base
-
-
-USER $NB_UID
-
 COPY ./fair-cells/ /src/fair-cells/
-
-ENTRYPOINT python -m fair-cells
+RUN pip install -r /src/fair-cells/helper/helper_requirements.txt
+COPY ./environment.yml /src/environment.yml
+RUN conda env update --file environment.yml --name base
+USER $NB_UID
+COPY ./notebook.ipynb /src/notebook.ipynb
+COPY ./nb_helper_config.json /src/nb_helper_config.json
+ENTRYPOINT ["python", "-m", "fair-cells"]
