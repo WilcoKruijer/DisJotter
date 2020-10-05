@@ -86,7 +86,7 @@ class MainHandler(NotebookRunnerHandler):
     def _get_inspector(self, kernel, config):
         try:
             inspector_module = importlib.import_module(
-                f'.inspection.{kernel}', package="disjotter")
+                f'.inspection.{kernel}', package="fair-cells")
 
             return inspector_module.inspector()
         except ModuleNotFoundError:
