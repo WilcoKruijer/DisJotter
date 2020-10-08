@@ -23,7 +23,7 @@ $ jupyter nbextension enable fair-cells --user --py
 
 #### Run with Docker
 ```bash
-docker run -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
+docker run -it -p 8888:8888  -e GEN_CERT=yes -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
 ```
 
 #### Development
