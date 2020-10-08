@@ -15,4 +15,6 @@ RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
 
+RUN jupyter notebook --generate-config
+
 ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug
