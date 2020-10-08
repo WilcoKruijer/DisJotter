@@ -16,7 +16,6 @@ RUN pip install -e /src/ && \
     mkdir -p /src/fair-cells/frontend/ && \
     ln -sfT /src/fair-cells/frontend/ /usr/local/share/jupyter/nbextensions/fair-cells
 
-
 # TODO: We would rather not run as root.
 # https://vitorbaptista.com/how-to-access-hosts-docker-socket-without-root
 # USER $NB_UID
