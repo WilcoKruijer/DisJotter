@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: cloud-cells
+  name: cloud-cells
+spec:
+  selector:
+    matchLabels:
+      app: cloud-cells
+  replicas: 1
+  template:
+    metadata:
+      name: cloud-cells
+      labels:
+        app: cloud-cells
+    spec:
+      securityContext:
+        fsGroup: 412    # Group ID of docker group on k8s nodes.
+      containers:
+        - name: cloud-cells
+          image: qcdis/cloud-cells
+          imagePullPolicy: Always
+          
+          securityContext:
+            privileged: true          
+          
+          volumeMounts:
+            - name: dockersock
+              mountPath: "/var/run/docker.sock"
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
