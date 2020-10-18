@@ -2,10 +2,12 @@ FROM jupyter/base-notebook
 
 USER root
 
+RUN apt update && apt upgrade -y && apt install gcc python3-dev -y
+
 EXPOSE 8888
 
 COPY . src
-RUN pip install jupyter
+RUN pip install laserchicken matplotlib
 #RUN pip install fair-cells
 WORKDIR src
 RUN python setup.py install
