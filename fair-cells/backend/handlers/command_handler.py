@@ -6,7 +6,7 @@ from typing import Optional
 import docker
 from notebook.base.handlers import APIHandler, HTTPError
 
-from ..container.creator import ContainerCreator
+from ..container.docker_service import DockerService
 from .base_handler import BaseHandler
 
 
@@ -47,7 +47,7 @@ class CommandHandler(BaseHandler):
             raise HTTPError(400, 'def')
 
 
-        cc = ContainerCreator('.', image_name, None)
+        cc = DockerService('.', image_name, None)
         container = cc.run_container(port)
 
         self.finish(json.dumps({

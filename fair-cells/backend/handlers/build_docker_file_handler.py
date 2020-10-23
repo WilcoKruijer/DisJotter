@@ -11,7 +11,7 @@ from notebook.base.handlers import IPythonHandler, APIHandler, HTTPError
 from notebook.utils import url_path_join
 from pigar.core import parse_packages
 
-from ..container.creator import ContainerCreator
+from ..container.docker_service import DockerService
 from .base_handler import BaseHandler
 from .environment_handler import BASE_STRING
 
@@ -77,7 +77,7 @@ class BuildDockerFileHandler(BaseHandler):
                 ignore.write("**/backend\n")
                 ignore.write("**/frontend\n")
 
-            cc = ContainerCreator(tmpdir, image_name, base_image)
+            cc = DockerService(tmpdir, image_name, base_image)
             docker_file = cc.get_dockerfile()
 
 
