@@ -22,17 +22,17 @@ docker.api.build.process_dockerfile = \
     lambda dockerfile, _: ('Dockerfile', dockerfile)
 
 
-class ContainerCreator:
-    def __init__(self, folder, image_name, base_image):
-        self.folder = folder
-        self.name = image_name
-        self.base_image = base_image
+class DockerService:
+    def __init__(self,):
+        # self.folder = folder
+        # self.name = image_name
+        # self.base_image = base_image
         self.client = docker.from_env()
 
-    def get_dockerfile(self) -> str:
+    def get_dockerfile(self,base_image) -> str:
         return (
             "\n".join([
-                f'FROM {self.base_image}',
+                f'FROM {base_image}',
                 f'USER root',
                 f'WORKDIR /src/',
 
@@ -51,15 +51,16 @@ class ContainerCreator:
             ])
         )
 
-    def build_container(self, dockerfile: str) -> docker.api.image.ImageApiMixin:
+    def build_container(self, dockerfile: str, folder, image_name) -> docker.api.image.ImageApiMixin:
         #  Save working directory so we can reset it later
         wd = os.getcwd()
-        os.chdir(self.folder)
+        os.chdir(folder)
         logging.info("getcwd: " + str(wd))
         try:
             logging.info("dockerfile: "+str(dockerfile))
             logging.info("Start building container. self.client.images.build")
-            image, log = self.client.images.build(tag=self.name, 
+
+            image, log = self.client.images.build(tag='fair-cells/'+image_name,
                                             path='.',
                                             dockerfile=dockerfile,
                                             rm=True,
@@ -73,17 +74,45 @@ class ContainerCreator:
         return image, log
 
   
-    def run_container(self, port=10000) -> docker.api.container.ContainerApiMixin:
+    def run_container(self, port=10000,name=None) -> docker.api.container.ContainerApiMixin:
         try:
-            cont = self.client.containers.get(self.name)
+            cont = self.client.containers.get(name)
             cont.stop(timeout=1)
         except docker.errors.NotFound:
             pass
         logging.info("containers.run name: "+self.name+" ports: "+str(port))
         return self.client.containers.run(self.name,
-                    name=self.name,
+                    name=name,
                     ports={'8888': port},
                     remove=True,
                     detach=True)
                     # command=f"{port} {code}")
 
+    def login(self,url,username,token):
+        resp = self.client.login(username=username, password=token, registry=url)
+        logging.info("resp: " + resp)
+        return resp
+
+    def get_local_images(self,tag=None):
+        images = []
+        for image in self.client.images.list():
+            if image.tags:
+                if tag:
+                    for im_tag in image.tags:
+                        if tag in im_tag:
+                            ret_image = {'name': im_tag}
+                            ret_image['short_id'] = image.short_id
+                            images.append(ret_image)
+                elif not tag:
+                    ret_image = {'name': image.tags[0]}
+                    ret_image['short_id'] = image.short_id
+                    images.append(ret_image)
+        return images
+
+    def push(self,images):
+        client = docker.from_env()
+        results = []
+        for image in images:
+            re = client.images.push(image)
+            results.append(re)
+        results
