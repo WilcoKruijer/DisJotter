@@ -93,11 +93,11 @@ class BuildHandler(BaseHandler):
                 ignore.write("**/frontend\n")
 
             logging.info("image_name: " + str(image_name))
-            cc = DockerService(tmpdir, image_name, base_image)
+            cc = DockerService()
 
             try:
                 logging.info("Start building container")
-                _, log = cc.build_container(cc.get_dockerfile())
+                _, log = cc.build_container(cc.get_dockerfile(base_image),tmpdir,image_name)
                 logging.info("Finish building container")
             except docker.errors.BuildError as be:
                 logger.error(str(be))

@@ -47,8 +47,8 @@ class CommandHandler(BaseHandler):
             raise HTTPError(400, 'def')
 
 
-        cc = DockerService('.', image_name, None)
-        container = cc.run_container(port)
+        cc = DockerService()
+        container = cc.run_container(port=port,name=image_name)
 
         self.finish(json.dumps({
             'data': container.status

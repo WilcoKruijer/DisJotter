@@ -77,8 +77,8 @@ class BuildDockerFileHandler(BaseHandler):
                 ignore.write("**/backend\n")
                 ignore.write("**/frontend\n")
 
-            cc = DockerService(tmpdir, image_name, base_image)
-            docker_file = cc.get_dockerfile()
+            cc = DockerService()
+            docker_file = cc.get_dockerfile(base_image)
 
 
         self.finish(json.dumps({
