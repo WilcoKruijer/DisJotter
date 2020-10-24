@@ -60,7 +60,7 @@ class DockerService:
             logging.info("dockerfile: "+str(dockerfile))
             logging.info("Start building container. self.client.images.build")
 
-            image, log = self.client.images.build(tag='fair-cells/'+image_name,
+            image, log = self.client.images.build(tag='cloudcells/'+image_name,
                                             path='.',
                                             dockerfile=dockerfile,
                                             rm=True,
@@ -80,8 +80,8 @@ class DockerService:
             cont.stop(timeout=1)
         except docker.errors.NotFound:
             pass
-        logging.info("containers.run name: "+self.name+" ports: "+str(port))
-        return self.client.containers.run(self.name,
+        logging.info("containers.run name: "+name+" ports: "+str(port))
+        return self.client.containers.run(name,
                     name=name,
                     ports={'8888': port},
                     remove=True,

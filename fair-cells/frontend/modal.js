@@ -44,6 +44,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             dockerUsernameInput: document.getElementById('docker-registry-username'),
             dockerTokenInput: document.getElementById('docker-registry-token'),
             imageTable: document.getElementById('image-table'),
+            imageTable2: document.getElementById('image-table2'),
             loader: document.getElementById('loader'),
             pushButton: document.getElementById('push-images-button'),
             kernelSpecific: document.getElementById('kernel-specific')
@@ -64,6 +65,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.pushButton.disabled = true;
 
         for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
+            row.remove();
+        }
+        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
             row.remove();
         }
         const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/images`, {
@@ -87,6 +91,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             tr.appendChild(checkbox);
             let row = elms.imageTable.insertRow();
             row.appendChild(tr);
+
+            let row2 = elms.imageTable2.insertRow();
+            row2.appendChild(tr);
         })
 
         elms.pushButton.disabled = false;
@@ -231,7 +238,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
     const handlebuildContainerButtonClick = async (e) => {
         e.preventDefault();
-
+        elms.loader.classList.remove('hide')
         elms.buildButton.value = 'Building Container...';
         elms.buildButton.disabled = true;
         elms.buildOutput.value = '';
@@ -263,16 +270,28 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         if (res.status !== 200) {
             return alert(await res.text())
         }
-
+        elms.loader.classList.add('hide')
         const data = await res.json()
 
         elms.buildButton.value = 'Build';
         elms.buildButton.disabled = false;
         elms.buildOutput.value = data['logs']
+
     }
 
     const handleRunButtonClick = async (e) => {
         e.preventDefault();
+        let selectedImageName = ''
+        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
+            let imageRow = row.childNodes[0]
+            let imageName = imageRow.childNodes[0].nodeValue;
+            let imageSelect = imageRow.childNodes[1];
+
+            if (imageSelect.checked){
+                selectedImageName = imageName
+                break;
+            }
+        }
 
         elms.runButton.value = 'Running...';
         elms.runButton.disabled = true;

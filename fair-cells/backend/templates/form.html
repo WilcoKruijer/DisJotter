@@ -140,6 +140,16 @@
 
     <ul id="fair-cells-run" class="flex-outer hide">
         <h4>Run</h4>
+
+         <div id="docker-run" style="width:400px; height:200px; overflow:auto;">
+        <li>
+            <table cellspacing="1" cellpadding="1" border="1" width="300" id="image-table2">
+            <tr>
+                <th>Image</th>
+            </tr>
+        </table>
+        </li>
+
         <li>
             <label for="run-port">Port:</label>
             <input id="run-port" value="10000" type="number"/>
@@ -155,6 +165,7 @@
                 <input id="stop-button" type="submit" value="Stop"/>
             </div>
         </li>
+             </div>
     </ul>
 
     <ul id="fair-cells-push" class="flex-outer ">
@@ -183,7 +194,7 @@
         <div id="docker-Push" style="width:400px; height:200px; overflow:auto;">
              <h5>Push Image</h5>
             <li>
-                    <table cellspacing="1" cellpadding="1" border="1" width="300" id="image-table">
+                <table cellspacing="1" cellpadding="1" border="1" width="300" id="image-table">
                     <tr>
                         <th>Image</th>
                     </tr>

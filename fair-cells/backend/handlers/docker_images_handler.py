@@ -17,7 +17,7 @@ class DockerImagesHandler(BaseHandler):
         body = self.get_json_body()
 
         ds = DockerService()
-        images = ds.get_local_images(tag='fair-cells')
+        images = ds.get_local_images(tag='cloudcells')
         logging.info("resp: " + str(images))
         self.finish(json.dumps(images))
 
