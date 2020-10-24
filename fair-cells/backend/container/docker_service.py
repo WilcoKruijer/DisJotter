@@ -89,8 +89,9 @@ class DockerService:
                     # command=f"{port} {code}")
 
     def login(self,url,username,token):
+        logging.info('username: '+username +'password: '+token + 'registry:'+url)
         resp = self.client.login(username=username, password=token, registry=url)
-        logging.info("resp: " + resp)
+        logging.info("resp: " + str(resp))
         return resp
 
     def get_local_images(self,tag=None):
@@ -101,18 +102,21 @@ class DockerService:
                     for im_tag in image.tags:
                         if tag in im_tag:
                             ret_image = {'name': im_tag}
-                            ret_image['short_id'] = image.short_id
+                            # ret_image['short_id'] = image.short_id
                             images.append(ret_image)
                 elif not tag:
                     ret_image = {'name': image.tags[0]}
-                    ret_image['short_id'] = image.short_id
+                    # ret_image['short_id'] = image.short_id
                     images.append(ret_image)
         return images
 
     def push(self,images):
         client = docker.from_env()
+        logging.info("images: " + str(images))
         results = []
         for image in images:
-            re = client.images.push(image)
+            logging.info("Pushing: " + str(image.split(':')[0]))
+            re = client.images.push(image.split(':')[0])
+            logging.info("re: " + str(re))
             results.append(re)
         results

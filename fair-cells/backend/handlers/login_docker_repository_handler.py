@@ -16,21 +16,19 @@ class LoginDockerRepositoryHandler(BaseHandler):
     def post(self, path):
         body = self.get_json_body()
 
-        docker_repository = body.get('docvariableskerRepository')
+        docker_repository = body.get('dockerRepository')
         docker_username = body.get('dockerUsername')
         docker_token = body.get('dockerToken')
-        variables = body.get('variables', {})
         logging.info("docker_repository: " + str(docker_repository))
         logging.info("docker_username: " + str(docker_username))
         logging.info("docker_token: " + str(docker_token))
 
         ds = DockerService()
         # try:
-        resp = ds.login(username=docker_username,token=docker_username,url=docker_repository)
-        logging.info("resp: " + resp)
-        self.finish(json.dumps({
-            'dockerLogin': resp
-        }))
+        logging.info('username: ' + docker_username + 'password: ' + docker_token + 'registry:' + docker_repository)
+        resp = ds.login(username=docker_username,token=docker_token,url=docker_repository)
+        logging.info("resp: " + str(resp))
+        self.finish(json.dumps(resp))
         # except requests.exceptions.HTTPError as e:
         #     logging.warning("e: " + str(e))
         #     error = self.write_error(e.status_code, exc_info=sys.exc_info())
