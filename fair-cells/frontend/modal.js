@@ -185,22 +185,22 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 //
 //        clearTimeout(timeoutId);
 //        elms.buildNotify.innerHTML = ""
-//
+        elms.loginButton.disabled = false;
         if (res.status !== 200) {
+//                return alert(await res.text())
             return alert(await 'Unauthorized '+elms.dockerRepositoryInput.value+': unauthorized: incorrect username or password')
         }
 //
 //        const data = await res.json()
 
-        elms.loginButton.disabled = false;
+
         return alert(await 'Login Successful')
     }
 
 
     const handlePushClick = async (e) => {
-        elms.loader.classList.remove('hide')
         e.preventDefault();
-
+        elms.loader.classList.remove('hide')
         elms.pushButton.disabled = true;
 
 
@@ -352,6 +352,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
 
         elms.buildButton.onclick = handlebuildContainerButtonClick;
+        elms.pushButton.onclick = handlePushClick;
         elms.loginButton.onclick = handleLoginButtonClick;
         elms.buildDockerfileButton.onclick = handleBuildDockerFileButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
