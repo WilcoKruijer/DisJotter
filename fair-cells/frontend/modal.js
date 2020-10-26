@@ -44,7 +44,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             dockerUsernameInput: document.getElementById('docker-registry-username'),
             dockerTokenInput: document.getElementById('docker-registry-token'),
             imageTable: document.getElementById('image-table'),
-            imageTable2: document.getElementById('image-table2'),
+//            imageTable2: document.getElementById('image-table2'),
             loader: document.getElementById('loader'),
             pushButton: document.getElementById('push-images-button'),
             kernelSpecific: document.getElementById('kernel-specific')
@@ -67,9 +67,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
             row.remove();
         }
-        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
-            row.remove();
-        }
+//        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
+//            row.remove();
+//        }
         const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/images`, {
             dockerRepository: elms.dockerRepositoryInput.value
         })
@@ -83,7 +83,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         images.forEach(image => {
             let tr = document.createElement("tr");
-            let text = document.createTextNode(image.name+':'+image.short_id);
+            let text = document.createTextNode(image.name);
             tr.appendChild(text);
 
             var checkbox = document.createElement("INPUT");
@@ -92,8 +92,19 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             let row = elms.imageTable.insertRow();
             row.appendChild(tr);
 
-            let row2 = elms.imageTable2.insertRow();
-            row2.appendChild(tr);
+//            let row2 = elms.imageTable2.insertRow();
+//            row2.appendChild(tr);
+//
+//            let tr2 = document.createElement("tr");
+//            let text2 = document.createTextNode(image.name);
+//            tr2.appendChild(text2);
+//
+//            var radio = document.createElement("INPUT");
+//            radio.setAttribute("type", "radio");
+//            tr2.appendChild(radio);
+//            let row2 = elms.imageTable2.insertRow();
+//            row2.appendChild(tr2);
+
         })
 
         elms.pushButton.disabled = false;
@@ -282,16 +293,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     const handleRunButtonClick = async (e) => {
         e.preventDefault();
         let selectedImageName = ''
-        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
-            let imageRow = row.childNodes[0]
-            let imageName = imageRow.childNodes[0].nodeValue;
-            let imageSelect = imageRow.childNodes[1];
-
-            if (imageSelect.checked){
-                selectedImageName = imageName
-                break;
-            }
-        }
 
         elms.runButton.value = 'Running...';
         elms.runButton.disabled = true;
