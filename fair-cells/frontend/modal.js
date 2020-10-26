@@ -46,7 +46,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             imageTable: document.getElementById('image-table'),
 //            imageTable2: document.getElementById('image-table2'),
             loader: document.getElementById('loader'),
-            pushButton: document.getElementById('push-images-button'),
+            publishButton: document.getElementById('publish-images-button'),
             kernelSpecific: document.getElementById('kernel-specific')
         }
     }
@@ -62,7 +62,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     };
 
     const setImagesSelectOptions = async (e) => {
-        elms.pushButton.disabled = true;
+        elms.publishButton.disabled = true;
 
         for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
             row.remove();
@@ -107,7 +107,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         })
 
-        elms.pushButton.disabled = false;
+        elms.publishButton.disabled = false;
     }
 
     const setCellSelectOptions = () => {
@@ -216,10 +216,10 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     }
 
 
-    const handlePushClick = async (e) => {
+    const handlePublishClick = async (e) => {
         e.preventDefault();
         elms.loader.classList.remove('hide')
-        elms.pushButton.disabled = true;
+        elms.publishButton.disabled = true;
 
 
         let imageNames = []
@@ -234,16 +234,16 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         }
 
 
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/push`, {
+        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/publish`, {
             images: imageNames
         })
 
         if (res.status !== 200) {
             return alert(await res.text())
         }
-        elms.pushButton.disabled = false;
+        elms.publishButton.disabled = false;
         elms.loader.classList.add('hide')
-        return alert(await 'Push Successful')
+        return alert(await 'Publish Successful')
     }
 
 
@@ -350,12 +350,12 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         
         buttonElements['build'] = document.getElementById("btn-tab-build");
         buttonElements['run'] = document.getElementById("btn-tab-run");
-        buttonElements['push'] = document.getElementById("btn-tab-push");
+        buttonElements['publish'] = document.getElementById("btn-tab-publish");
         buttonElements['about'] = document.getElementById("btn-tab-about");
 
         formElements['build'] = document.getElementById("fair-cells-build");
         formElements['run'] = document.getElementById("fair-cells-run");
-        formElements['push'] = document.getElementById("fair-cells-push");
+        formElements['publish'] = document.getElementById("fair-cells-publish");
         formElements['about'] = document.getElementById("fair-cells-about");
 
         Object.keys(buttonElements).forEach(k => {
@@ -372,7 +372,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
 
         elms.buildButton.onclick = handlebuildContainerButtonClick;
-        elms.pushButton.onclick = handlePushClick;
+        elms.publishButton.onclick = handlePublishClick;
         elms.loginButton.onclick = handleLoginButtonClick;
         elms.buildDockerfileButton.onclick = handleBuildDockerFileButtonClick;
         elms.runButton.onclick = handleRunButtonClick;

@@ -9,7 +9,7 @@ logger.setLevel(logging.DEBUG)
 
 
 
-class DockerPushHandler(BaseHandler):
+class DockerPublishHandler(BaseHandler):
 
     def post(self, path):
         body = self.get_json_body()
