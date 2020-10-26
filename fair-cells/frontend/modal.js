@@ -38,6 +38,15 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             cellPreview: document.getElementById('cell-preview'),
             containerStatus: document.getElementById('container-status'),
 
+
+            loginButton: document.getElementById('docker-registry-login-button'),
+            dockerRepositoryInput: document.getElementById('docker-registry'),
+            dockerUsernameInput: document.getElementById('docker-registry-username'),
+            dockerTokenInput: document.getElementById('docker-registry-token'),
+            imageTable: document.getElementById('image-table'),
+//            imageTable2: document.getElementById('image-table2'),
+            loader: document.getElementById('loader'),
+            pushButton: document.getElementById('push-images-button'),
             kernelSpecific: document.getElementById('kernel-specific')
         }
     }
@@ -51,6 +60,55 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         currTab = newTab;
     };
+
+    const setImagesSelectOptions = async (e) => {
+        elms.pushButton.disabled = true;
+
+        for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
+            row.remove();
+        }
+//        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
+//            row.remove();
+//        }
+        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/images`, {
+            dockerRepository: elms.dockerRepositoryInput.value
+        })
+
+        const images = await res.json()
+
+        if (images.length <= 0) {
+           return alert(await 'Repository has no images')
+        }
+
+
+        images.forEach(image => {
+            let tr = document.createElement("tr");
+            let text = document.createTextNode(image.name);
+            tr.appendChild(text);
+
+            var checkbox = document.createElement("INPUT");
+            checkbox.setAttribute("type", "checkbox");
+            tr.appendChild(checkbox);
+            let row = elms.imageTable.insertRow();
+            row.appendChild(tr);
+
+//            let row2 = elms.imageTable2.insertRow();
+//            row2.appendChild(tr);
+//
+//            let tr2 = document.createElement("tr");
+//            let text2 = document.createTextNode(image.name);
+//            tr2.appendChild(text2);
+//
+//            var radio = document.createElement("INPUT");
+//            radio.setAttribute("type", "radio");
+//            tr2.appendChild(radio);
+//            let row2 = elms.imageTable2.insertRow();
+//            row2.appendChild(tr2);
+
+        })
+
+        elms.pushButton.disabled = false;
+    }
 
     const setCellSelectOptions = () => {
         // Allow the user to only select code cells.
@@ -133,9 +191,65 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.buildDockerFileOutput.value = data['dockerFile']
     }
 
+    const handleLoginButtonClick = async (e) => {
+        e.preventDefault();
+        elms.loginButton.disabled = true;
+
+        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/login`, {
+            dockerRepository: elms.dockerRepositoryInput.value,
+            dockerUsername: elms.dockerUsernameInput.value,
+            dockerToken: elms.dockerTokenInput.value
+        })
+//
+//        clearTimeout(timeoutId);
+//        elms.buildNotify.innerHTML = ""
+        elms.loginButton.disabled = false;
+        if (res.status !== 200) {
+//                return alert(await res.text())
+            return alert(await 'Unauthorized '+elms.dockerRepositoryInput.value+': unauthorized: incorrect username or password')
+        }
+//
+//        const data = await res.json()
+
+
+        return alert(await 'Login Successful')
+    }
+
+
+    const handlePushClick = async (e) => {
+        e.preventDefault();
+        elms.loader.classList.remove('hide')
+        elms.pushButton.disabled = true;
+
+
+        let imageNames = []
+        for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
+            let imageRow = row.childNodes[0]
+            let imageName = imageRow.childNodes[0].nodeValue;
+            let imageSelect = imageRow.childNodes[1];
+
+            if (imageSelect.checked){
+                imageNames.push(imageName);
+            }
+        }
+
+
+        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/push`, {
+            images: imageNames
+        })
+
+        if (res.status !== 200) {
+            return alert(await res.text())
+        }
+        elms.pushButton.disabled = false;
+        elms.loader.classList.add('hide')
+        return alert(await 'Push Successful')
+    }
+
+
     const handlebuildContainerButtonClick = async (e) => {
         e.preventDefault();
-
+        elms.loader.classList.remove('hide')
         elms.buildButton.value = 'Building Container...';
         elms.buildButton.disabled = true;
         elms.buildOutput.value = '';
@@ -167,16 +281,18 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         if (res.status !== 200) {
             return alert(await res.text())
         }
-
+        elms.loader.classList.add('hide')
         const data = await res.json()
 
         elms.buildButton.value = 'Build';
         elms.buildButton.disabled = false;
         elms.buildOutput.value = data['logs']
+
     }
 
     const handleRunButtonClick = async (e) => {
         e.preventDefault();
+        let selectedImageName = ''
 
         elms.runButton.value = 'Running...';
         elms.runButton.disabled = true;
@@ -234,11 +350,13 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         
         buttonElements['build'] = document.getElementById("btn-tab-build");
         buttonElements['run'] = document.getElementById("btn-tab-run");
-        buttonElements['validate'] = document.getElementById("btn-tab-validate");
+        buttonElements['push'] = document.getElementById("btn-tab-push");
+        buttonElements['about'] = document.getElementById("btn-tab-about");
 
         formElements['build'] = document.getElementById("fair-cells-build");
         formElements['run'] = document.getElementById("fair-cells-run");
-        formElements['validate'] = document.getElementById("fair-cells-about");
+        formElements['push'] = document.getElementById("fair-cells-push");
+        formElements['about'] = document.getElementById("fair-cells-about");
 
         Object.keys(buttonElements).forEach(k => {
             buttonElements[k].onclick = () => switchTab(k);
@@ -250,8 +368,12 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         setCellSelectOptions(elms.cellSelector, elms.cellPreview);
 
+        setImagesSelectOptions();
+
 
         elms.buildButton.onclick = handlebuildContainerButtonClick;
+        elms.pushButton.onclick = handlePushClick;
+        elms.loginButton.onclick = handleLoginButtonClick;
         elms.buildDockerfileButton.onclick = handleBuildDockerFileButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
         elms.statusButton.onclick = handleStatusButtonClick;

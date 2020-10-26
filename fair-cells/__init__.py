@@ -21,6 +21,9 @@ def load_jupyter_server_extension(nbapp):
     from .backend.handlers.template_handler import TemplateHandler
     from .backend.handlers.build_handler import BuildHandler
     from .backend.handlers.build_docker_file_handler import BuildDockerFileHandler
+    from .backend.handlers.docker_push_handler import DockerPushHandler
+    from .backend.handlers.docker_images_handler import DockerImagesHandler
+    from .backend.handlers.login_docker_repository_handler import LoginDockerRepositoryHandler
     from .backend.handlers.command_handler import CommandHandler
     from .backend.handlers.inspect_handler import InspectHandler
 
@@ -32,6 +35,9 @@ def load_jupyter_server_extension(nbapp):
     host_pattern = '.*$'
     build_pattern = url_path_join(base, '/dj/notebook/(.*)/build')
     build_docker_file_pattern = url_path_join(base, '/dj/notebook/(.*)/build_docker_file')
+    images_pattern = url_path_join(base, '/dj/notebook/(.*)/images')
+    login_docker_repository_pattern = url_path_join(base, '/dj/notebook/(.*)/login')
+    push_docker_image_pattern = url_path_join(base, '/dj/notebook/(.*)/push')
     image_command_pattern = url_path_join(base, '/dj/image/(.*)/command/(.*)')
     environment_pattern = url_path_join(base, '/dj/notebook/(.*)/environment')
     inspect_pattern = url_path_join(base, '/dj/notebook/(.*)/inspect/(.*)')
@@ -41,6 +47,9 @@ def load_jupyter_server_extension(nbapp):
     web_app.add_handlers(host_pattern, [
         (build_pattern, BuildHandler),
         (build_docker_file_pattern, BuildDockerFileHandler),
+        (images_pattern, DockerImagesHandler),
+        (login_docker_repository_pattern, LoginDockerRepositoryHandler),
+        (push_docker_image_pattern, DockerPushHandler),
         (image_command_pattern, CommandHandler),
         (environment_pattern, EnvironmentHandler),
         (inspect_pattern, InspectHandler),
