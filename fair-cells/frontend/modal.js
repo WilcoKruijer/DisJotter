@@ -46,7 +46,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             imageTable: document.getElementById('image-table'),
 //            imageTable2: document.getElementById('image-table2'),
             loader: document.getElementById('loader'),
-            pushButton: document.getElementById('push-images-button'),
+            publishButton: document.getElementById('publish-images-button'),
             kernelSpecific: document.getElementById('kernel-specific')
         }
     }
@@ -61,54 +61,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         currTab = newTab;
     };
 
-    const setImagesSelectOptions = async (e) => {
-        elms.pushButton.disabled = true;
-
-        for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
-            row.remove();
-        }
-//        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
-//            row.remove();
-//        }
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/images`, {
-            dockerRepository: elms.dockerRepositoryInput.value
-        })
-
-        const images = await res.json()
-
-        if (images.length <= 0) {
-           return alert(await 'Repository has no images')
-        }
-
-
-        images.forEach(image => {
-            let tr = document.createElement("tr");
-            let text = document.createTextNode(image.name);
-            tr.appendChild(text);
-
-            var checkbox = document.createElement("INPUT");
-            checkbox.setAttribute("type", "checkbox");
-            tr.appendChild(checkbox);
-            let row = elms.imageTable.insertRow();
-            row.appendChild(tr);
-
-//            let row2 = elms.imageTable2.insertRow();
-//            row2.appendChild(tr);
-//
-//            let tr2 = document.createElement("tr");
-//            let text2 = document.createTextNode(image.name);
-//            tr2.appendChild(text2);
-//
-//            var radio = document.createElement("INPUT");
-//            radio.setAttribute("type", "radio");
-//            tr2.appendChild(radio);
-//            let row2 = elms.imageTable2.insertRow();
-//            row2.appendChild(tr2);
-
-        })
-
-        elms.pushButton.disabled = false;
-    }
 
     const setCellSelectOptions = () => {
         // Allow the user to only select code cells.
@@ -216,34 +168,28 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     }
 
 
-    const handlePushClick = async (e) => {
+    const handlePublishClick = async (e) => {
         e.preventDefault();
         elms.loader.classList.remove('hide')
-        elms.pushButton.disabled = true;
+        elms.publishButton.disabled = true;
+        elms.loginButton.disabled = true;
 
 
         let imageNames = []
-        for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
-            let imageRow = row.childNodes[0]
-            let imageName = imageRow.childNodes[0].nodeValue;
-            let imageSelect = imageRow.childNodes[1];
 
-            if (imageSelect.checked){
-                imageNames.push(imageName);
-            }
-        }
-
-
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/push`, {
+        imageNames.push(elms.imageNameInput.value);
+        console.log('imageNames: '+imageNames)
+        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/publish`, {
             images: imageNames
         })
 
+        elms.loginButton.disabled = false;
         if (res.status !== 200) {
             return alert(await res.text())
         }
-        elms.pushButton.disabled = false;
+        elms.publishButton.disabled = false;
         elms.loader.classList.add('hide')
-        return alert(await 'Push Successful')
+        return alert(await 'Publish Successful')
     }
 
 
@@ -350,12 +296,12 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         
         buttonElements['build'] = document.getElementById("btn-tab-build");
         buttonElements['run'] = document.getElementById("btn-tab-run");
-        buttonElements['push'] = document.getElementById("btn-tab-push");
+        buttonElements['publish'] = document.getElementById("btn-tab-publish");
         buttonElements['about'] = document.getElementById("btn-tab-about");
 
         formElements['build'] = document.getElementById("fair-cells-build");
         formElements['run'] = document.getElementById("fair-cells-run");
-        formElements['push'] = document.getElementById("fair-cells-push");
+        formElements['publish'] = document.getElementById("fair-cells-publish");
         formElements['about'] = document.getElementById("fair-cells-about");
 
         Object.keys(buttonElements).forEach(k => {
@@ -368,11 +314,9 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         setCellSelectOptions(elms.cellSelector, elms.cellPreview);
 
-        setImagesSelectOptions();
-
 
         elms.buildButton.onclick = handlebuildContainerButtonClick;
-        elms.pushButton.onclick = handlePushClick;
+        elms.publishButton.onclick = handlePublishClick;
         elms.loginButton.onclick = handleLoginButtonClick;
         elms.buildDockerfileButton.onclick = handleBuildDockerFileButtonClick;
         elms.runButton.onclick = handleRunButtonClick;
