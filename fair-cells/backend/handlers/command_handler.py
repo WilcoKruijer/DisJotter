@@ -29,14 +29,15 @@ class CommandHandler(BaseHandler):
         client = docker.from_env()
         
         try:
-            container = client.containers.get(image_name)
-            container.stop(timeout=1)
-            status = container.status
+            cc = DockerService()
+            status = cc.stop_image(image=image_name)
+            if not status:
+                status = ['not_found']
         except docker.errors.NotFound:
             status = 'not_found'
         finally:
             self.finish(json.dumps({
-                'data': status
+                'data': status[0]
             }))
 
     def _run(self, image_name):
@@ -48,7 +49,7 @@ class CommandHandler(BaseHandler):
 
 
         cc = DockerService()
-        container = cc.run_container(port=port,name=image_name)
+        container = cc.run_container(port=port,image=image_name)
 
         self.finish(json.dumps({
             'data': container.status
@@ -58,12 +59,14 @@ class CommandHandler(BaseHandler):
         client = docker.from_env()
 
         try:
-            container = client.containers.get(image_name)
-            status = container.status
+            cc = DockerService()
+            status = cc.get_image_status(image_name)
+            if not status:
+                status=['not_found']
         except docker.errors.NotFound:
             status = 'not_found'
         finally:
             self.finish(json.dumps({
-                'data': status
+                'data': status[0]
             }))
 

@@ -61,54 +61,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         currTab = newTab;
     };
 
-    const setImagesSelectOptions = async (e) => {
-        elms.publishButton.disabled = true;
-
-        for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
-            row.remove();
-        }
-//        for (var i = 1, row; row = elms.imageTable2.rows[i]; i++) {
-//            row.remove();
-//        }
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/images`, {
-            dockerRepository: elms.dockerRepositoryInput.value
-        })
-
-        const images = await res.json()
-
-        if (images.length <= 0) {
-           return alert(await 'Repository has no images')
-        }
-
-
-        images.forEach(image => {
-            let tr = document.createElement("tr");
-            let text = document.createTextNode(image.name);
-            tr.appendChild(text);
-
-            var checkbox = document.createElement("INPUT");
-            checkbox.setAttribute("type", "checkbox");
-            tr.appendChild(checkbox);
-            let row = elms.imageTable.insertRow();
-            row.appendChild(tr);
-
-//            let row2 = elms.imageTable2.insertRow();
-//            row2.appendChild(tr);
-//
-//            let tr2 = document.createElement("tr");
-//            let text2 = document.createTextNode(image.name);
-//            tr2.appendChild(text2);
-//
-//            var radio = document.createElement("INPUT");
-//            radio.setAttribute("type", "radio");
-//            tr2.appendChild(radio);
-//            let row2 = elms.imageTable2.insertRow();
-//            row2.appendChild(tr2);
-
-        })
-
-        elms.publishButton.disabled = false;
-    }
 
     const setCellSelectOptions = () => {
         // Allow the user to only select code cells.
@@ -220,24 +172,18 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         e.preventDefault();
         elms.loader.classList.remove('hide')
         elms.publishButton.disabled = true;
+        elms.loginButton.disabled = true;
 
 
         let imageNames = []
-        for (var i = 1, row; row = elms.imageTable.rows[i]; i++) {
-            let imageRow = row.childNodes[0]
-            let imageName = imageRow.childNodes[0].nodeValue;
-            let imageSelect = imageRow.childNodes[1];
 
-            if (imageSelect.checked){
-                imageNames.push(imageName);
-            }
-        }
-
-
+        imageNames.push(elms.imageNameInput.value);
+        console.log('imageNames: '+imageNames)
         const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/publish`, {
             images: imageNames
         })
 
+        elms.loginButton.disabled = false;
         if (res.status !== 200) {
             return alert(await res.text())
         }
@@ -367,8 +313,6 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms = getElements();
 
         setCellSelectOptions(elms.cellSelector, elms.cellPreview);
-
-        setImagesSelectOptions();
 
 
         elms.buildButton.onclick = handlebuildContainerButtonClick;
