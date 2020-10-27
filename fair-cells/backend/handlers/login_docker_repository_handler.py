@@ -26,7 +26,7 @@ class LoginDockerRepositoryHandler(BaseHandler):
         ds = DockerService()
         # try:
         logging.info('username: ' + docker_username + 'password: ' + docker_token + 'registry:' + docker_repository)
-        resp = ds.login(username=docker_username,token=docker_token,url=docker_repository)
+        resp = ds.login(url=docker_repository,username=docker_username,token=docker_token)
         logging.info("resp: " + str(resp))
         self.finish(json.dumps(resp))
         # except requests.exceptions.HTTPError as e:

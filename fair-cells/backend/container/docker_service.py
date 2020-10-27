@@ -11,7 +11,7 @@ import docker
 import traceback
 
 import logging
-logger = logging.getLogger('ContainerCreator')
+logger = logging.getLogger('DockerService')
 logger.setLevel(logging.DEBUG)
 
 
@@ -20,6 +20,7 @@ logger.setLevel(logging.DEBUG)
 #  https://github.com/docker/docker-py/issues/2105#issuecomment-613685891
 docker.api.build.process_dockerfile = \
     lambda dockerfile, _: ('Dockerfile', dockerfile)
+
 
 
 class DockerService:
@@ -73,22 +74,21 @@ class DockerService:
         logging.info("Returning image and log: "+str(log))
         return image, log
 
-  
-    def run_container(self, port=10000,name=None) -> docker.api.container.ContainerApiMixin:
+
+    def run_container(self, port=10000, image=None) -> docker.api.container.ContainerApiMixin:
         try:
-            cont = self.client.containers.get(name)
-            cont.stop(timeout=1)
+            self.stop_image(image=image)
         except docker.errors.NotFound:
             pass
-        logging.info("containers.run name: "+name+" ports: "+str(port))
-        return self.client.containers.run(name,
-                    name=name,
-                    ports={'8888': port},
-                    remove=True,
-                    detach=True)
-                    # command=f"{port} {code}")
+        logging.info("containers.run name: " + image + " ports: " + str(port))
+        container_out = self.client.containers.run(image,
+                                   # name=image,
+                                   ports={'8888': port},
+                                   remove=True,
+                                   detach=True)
+        return container_out
 
-    def login(self,url,username,token):
+    def login(self,url=None,username=None,token=None):
         logging.info('username: '+username +'password: '+token + 'registry:'+url)
         resp = self.client.login(username=username, password=token, registry=url)
         logging.info("resp: " + str(resp))
@@ -111,12 +111,37 @@ class DockerService:
         return images
 
     def push(self,images):
-        client = docker.from_env()
         logging.info("images: " + str(images))
         results = []
         for image in images:
             logging.info("Pushing: " + str(image.split(':')[0]))
-            re = client.images.push(image.split(':')[0])
+            re = self.client.images.push(image.split(':')[0])
             logging.info("re: " + str(re))
             results.append(re)
-        results
+        return results
+
+    def get_image_status(self, image=None):
+        running_containers = self.get_container(image_name=image)
+        stats = []
+        if running_containers:
+            for cont in running_containers:
+                stats.append( cont.status )
+        return stats
+
+    def stop_image(self, image=None):
+        running_containers = self.get_container(image_name=image)
+        stats = []
+        if running_containers:
+            for cont in running_containers:
+                stats.append(cont.stop(timeout=1))
+        return stats
+
+    def get_container(self, image_name=None):
+        running_containers = self.client.containers.list()
+        if not image_name:
+            return running_containers
+        if running_containers:
+            for cont in running_containers:
+                    for tag in cont.image.tags:
+                        if tag.split(':')[0] == image_name:
+                            return [cont]
