@@ -89,7 +89,7 @@
         <h4>Build</h4>
         <li>
             <label for="image-name">Image name:</label>
-            <input id="image-name" value="nb_helper"/>
+            <input id="image-name" value="cloudcells/cell"/>
         </li>
         <li>
             <label for="base-image">Base image:</label>
@@ -193,14 +193,18 @@
        </div>
         <div id="docker-publish" style="width:400px; height:200px; overflow:auto;">
              <h5>Publish Image</h5>
+<!--            <li>-->
+<!--                <table cellspacing="1" cellpadding="1" border="1" width="300" id="image-table">-->
+<!--                    <tr>-->
+<!--                        <th>Image</th>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </li>-->
             <li>
-                <table cellspacing="1" cellpadding="1" border="1" width="300" id="image-table">
-                    <tr>
-                        <th>Image</th>
-                    </tr>
-                </table>
+                <p>
+                    <input id="publish-images-button" type="submit" value="Publish"/>
+                </p>
             </li>
-            <input id="publish-images-button" type="submit" value="Publish"/>
        </div>
     </ul>
 
