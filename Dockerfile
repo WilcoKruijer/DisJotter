@@ -16,13 +16,13 @@ RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
 
-#ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug
+ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug
 
-
-ENTRYPOINT cd /src && \
-           python setup.py install &&\
-           jupyter serverextension enable --py fair-cells && \
-           jupyter nbextension install --py fair-cells && \
-           jupyter nbextension enable fair-cells  --py && \
-
-           jupyter notebook -y --port=8888 --no-browser --allow-root --debug
+#
+#ENTRYPOINT cd /src && \
+#           python setup.py install &&\
+#           jupyter serverextension enable --py fair-cells && \
+#           jupyter nbextension install --py fair-cells && \
+#           jupyter nbextension enable fair-cells  --py && \
+#
+#           jupyter notebook -y --port=8888 --no-browser --allow-root --debug
