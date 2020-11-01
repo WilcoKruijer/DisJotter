@@ -5,7 +5,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
     const dialog = require('base/js/dialog');
     const { jsonRequest } = require("./util");
 
-    const formPromise = fetch('/dj/templates/form.html').then(resp => resp.text());
+    const formPromise = fetch('/fair-cells/templates/form.html').then(resp => resp.text());
 
     const formElements = {};
     const buttonElements = {};
@@ -86,7 +86,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
                 elms.cellPreview.innerHTML = '<p>Output not rendered.</p>';
             }
 
-            const inspectorResp = await fetch(`/dj/notebook/${notebook.path}/inspect/inspector.html?cellIdx=${idx}`);
+            const inspectorResp = await fetch(`/fair-cells/notebook/${notebook.path}/inspect/inspector.html?cellIdx=${idx}`);
             if (inspectorResp.status === 501) {
                 // No inspector for this Kernel
                 return;
@@ -121,7 +121,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             }, 5000)
         }, 5000)
 
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/build_docker_file`, {
+        const res = await jsonRequest('POST', `/fair-cells/notebook/${notebook.path}/build_docker_file`, {
             imageName: elms.imageNameInput.value,
             baseImage: elms.baseImageSelector.value,
             cellIndex: elms.cellSelector.value,
@@ -147,7 +147,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         e.preventDefault();
         elms.loginButton.disabled = true;
 
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/login`, {
+        const res = await jsonRequest('POST', `/fair-cells/notebook/${notebook.path}/login`, {
             dockerRepository: elms.dockerRepositoryInput.value,
             dockerUsername: elms.dockerUsernameInput.value,
             dockerToken: elms.dockerTokenInput.value
@@ -179,7 +179,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
 
         imageNames.push(elms.imageNameInput.value);
         console.log('imageNames: '+imageNames)
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/publish`, {
+        const res = await jsonRequest('POST', `/fair-cells/notebook/${notebook.path}/publish`, {
             images: imageNames
         })
 
@@ -213,7 +213,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
             }, 5000)
         }, 5000)
 
-        const res = await jsonRequest('POST', `/dj/notebook/${notebook.path}/build`, {
+        const res = await jsonRequest('POST', `/fair-cells/notebook/${notebook.path}/build`, {
             imageName: elms.imageNameInput.value,
             baseImage: elms.baseImageSelector.value,
             cellIndex: elms.cellSelector.value,
@@ -244,7 +244,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.runButton.disabled = true;
 
         const imageName = elms.imageNameInput.value;
-        const res = await jsonRequest('POST', `/dj/image/${imageName}/command/run`, {
+        const res = await jsonRequest('POST', `/fair-cells/image/${imageName}/command/run`, {
             port: Number(elms.runPortInput.value)
         })
 
@@ -264,7 +264,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         e.preventDefault();
 
         const imageName = elms.imageNameInput.value;
-        const res = await jsonRequest('GET', `/dj/image/${imageName}/command/status`)
+        const res = await jsonRequest('GET', `/fair-cells/image/${imageName}/command/status`)
 
         if (res.status !== 200) {
             return alert(await res.text())
@@ -279,7 +279,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         e.preventDefault();
 
         const imageName = elms.imageNameInput.value;
-        const res = await jsonRequest('POST', `/dj/image/${imageName}/command/stop`)
+        const res = await jsonRequest('POST', `/fair-cells/image/${imageName}/command/stop`)
 
         if (res.status !== 200) {
             return alert(await res.text())
@@ -323,7 +323,7 @@ define(["require", "base/js/namespace", "base/js/dialog", "./util"], function (r
         elms.statusButton.onclick = handleStatusButtonClick;
         elms.stopButton.onclick = handleStopButtonClick;
 
-        const res = await jsonRequest('GET', `/dj/notebook/${notebook.path}/environment`)
+        const res = await jsonRequest('GET', `/fair-cells/notebook/${notebook.path}/environment`)
 
         if (!res.ok) {
             return alert(await res.text());

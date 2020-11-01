@@ -33,16 +33,16 @@ def load_jupyter_server_extension(nbapp):
     base = web_app.settings['base_url']
 
     host_pattern = '.*$'
-    build_pattern = url_path_join(base, '/dj/notebook/(.*)/build')
-    build_docker_file_pattern = url_path_join(base, '/dj/notebook/(.*)/build_docker_file')
-    images_pattern = url_path_join(base, '/dj/notebook/(.*)/images')
-    login_docker_repository_pattern = url_path_join(base, '/dj/notebook/(.*)/login')
-    publish_docker_image_pattern = url_path_join(base, '/dj/notebook/(.*)/publish')
-    image_command_pattern = url_path_join(base, '/dj/image/(.*)/command/(.*)')
-    environment_pattern = url_path_join(base, '/dj/notebook/(.*)/environment')
-    inspect_pattern = url_path_join(base, '/dj/notebook/(.*)/inspect/(.*)')
+    build_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/build')
+    build_docker_file_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/build_docker_file')
+    images_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/images')
+    login_docker_repository_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/login')
+    publish_docker_image_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/publish')
+    image_command_pattern = url_path_join(base, '/fair-cells/image/(.*)/command/(.*)')
+    environment_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/environment')
+    inspect_pattern = url_path_join(base, '/fair-cells/notebook/(.*)/inspect/(.*)')
 
-    template_pattern = url_path_join(base, r'/dj/templates/(.*\.(?:html|js|css))')
+    template_pattern = url_path_join(base, r'/fair-cells/templates/(.*\.(?:html|js|css))')
 
     web_app.add_handlers(host_pattern, [
         (build_pattern, BuildHandler),
