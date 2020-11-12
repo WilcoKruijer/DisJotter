@@ -4,8 +4,8 @@
 FAIR-Cells is a Jupyter Notebook extension that allows the user to interactively create a Docker image from a Jupyter Notebook. Our tool can be used to generate Docker images from single cells of a Jupyter Notebook. The generated image will run a web service that will output the specified cell. This includes image outputs like plots. Code introspection for Python enables the services to change cell output at service run-time.
 
  
- [![FAIR-Cells Demo](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://vimeo.com/478435713 "FAIR-Cells Demo")
- [![FAIR-Cells Demo](https://vimeo.com/478435713)](https://vimeo.com/478435713 "FAIR-Cells Demo")
+ [![FAIR-Cells Demo](https://raw.githubusercontent.com/QCDIS/FAIRCells/master/images/Screenshot%20from%202020-11-12%2013-17-47.png)](https://player.vimeo.com/video/478435713 "FAIR-Cells Demo")
+
 
 
 Among other things, FAIR-Cells is useful for reusing notebook components in workflows that support web services. 
