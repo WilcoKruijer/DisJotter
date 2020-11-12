@@ -5,7 +5,7 @@ FAIR-Cells is a Jupyter Notebook extension that allows the user to interactively
 
  [link text](https://vimeo.com/user35169355/review/478435713/b933239298 "FAIR-Cells Demo")
  
- [![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
+ [![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://vimeo.com/user35169355/review/478435713/b933239298 "FAIR-Cells Demo")
 
 
 Among other things, FAIR-Cells is useful for reusing notebook components in workflows that support web services. 
