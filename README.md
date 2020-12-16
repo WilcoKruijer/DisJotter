@@ -31,7 +31,12 @@ $ jupyter serverextension enable --py fair-cells --user
 $ jupyter nbextension install --py fair-cells --user
 $ jupyter nbextension enable fair-cells --user --py
 ```
+Start jupyter notebook with:
 
+```bash
+$ jupyter notebook
+```
+You can now open http://localhost:8888 
 
 #### Run with Docker
 ```bash
