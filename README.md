@@ -67,3 +67,16 @@ Make sure you have Docker installed. To verify you may run:
 $ [sudo] docker run hello-world
 ```
 
+Start the docker container with jupyter and FAIR-Cells enabled:
+```bash
+docker run -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells:develop-snapshot
+```
+
+In your output you will see something similar to this:
+```bash
+
+```
+
+With your browser (preferably chrome or chromium) open http://127.0.0.1:8888/
+
+
