@@ -61,7 +61,7 @@ class DockerService:
             logging.info("dockerfile: "+str(dockerfile))
             logging.info("Start building container. self.client.images.build")
 
-            image, log = self.client.images.build(tag='cloudcells/'+image_name,
+            image, log = self.client.images.build(tag=image_name,
                                             path='.',
                                             dockerfile=dockerfile,
                                             rm=True,
