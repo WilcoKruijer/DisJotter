@@ -13,7 +13,7 @@ Among other things, FAIR-Cells is useful for reusing notebook components in work
 ... More information to follow ...
 
 
-#### Installation
+## Installation
 FAIR-Cells can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension 
  to have any effect.
  
@@ -38,12 +38,12 @@ $ jupyter notebook
 ```
 You can now open http://localhost:8888 
 
-#### Run with Docker
+## Run with Docker
 ```bash
 docker run -it -p 8888:8888  -e GEN_CERT=yes -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
 ```
 
-#### Development
+## Development
 To keep your system clean it is recommended to develop using Docker. The following command will run a Jupyter Notebook 
 server with FAIR-Cells enabled at http://localhost:8888. Autoreload is enabled for Python files, you will need to reload 
 your browser to see changes in the front-end.
@@ -58,3 +58,12 @@ can be found in `docker/helper_dummy`. The notebook will be available at http://
 ```bash
 $ docker-compose up --build helper
 ```
+
+
+## Tutorial 
+
+Make sure you have Docker installed. To verify you may run:
+```bash
+$ [sudo] docker run hello-world
+```
+
