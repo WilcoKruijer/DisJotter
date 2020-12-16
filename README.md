@@ -14,9 +14,14 @@ Among other things, FAIR-Cells is useful for reusing notebook components in work
 
 
 #### Installation
-FAIR-Cells
- can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension 
+FAIR-Cells can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension 
  to have any effect.
+ 
+ Optionally, you may want to set up a virtual python environment:
+ 
+```bash
+$ python3 -m venv venv
+```
 
 ```bash
 $ [sudo] pip install jupyter --user
