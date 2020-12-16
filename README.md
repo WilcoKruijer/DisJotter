@@ -67,3 +67,56 @@ Make sure you have Docker installed. To verify you may run:
 $ [sudo] docker run hello-world
 ```
 
+Start the docker container with jupyter and FAIR-Cells enabled:
+```bash
+docker run -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells:develop-snapshot
+```
+
+In your output you will see something similar to this:
+```bash
+[D 16:27:28.614 NotebookApp] Searching ['/home/jovyan', '/home/jovyan/.jupyter', '/opt/conda/etc/jupyter', '/usr/local/etc/jupyter', '/etc/jupyter'] for config files
+[D 16:27:28.615 NotebookApp] Looking for jupyter_config in /etc/jupyter
+[D 16:27:28.615 NotebookApp] Looking for jupyter_config in /usr/local/etc/jupyter
+[D 16:27:28.615 NotebookApp] Looking for jupyter_config in /opt/conda/etc/jupyter
+[D 16:27:28.616 NotebookApp] Looking for jupyter_config in /home/jovyan/.jupyter
+[D 16:27:28.616 NotebookApp] Looking for jupyter_config in /home/jovyan
+[D 16:27:28.617 NotebookApp] Looking for jupyter_notebook_config in /etc/jupyter
+[D 16:27:28.618 NotebookApp] Loaded config file: /etc/jupyter/jupyter_notebook_config.py
+[D 16:27:28.618 NotebookApp] Looking for jupyter_notebook_config in /usr/local/etc/jupyter
+[D 16:27:28.618 NotebookApp] Looking for jupyter_notebook_config in /opt/conda/etc/jupyter
+[D 16:27:28.618 NotebookApp] Looking for jupyter_notebook_config in /home/jovyan/.jupyter
+[D 16:27:28.619 NotebookApp] Loaded config file: /home/jovyan/.jupyter/jupyter_notebook_config.py
+[D 16:27:28.619 NotebookApp] Loaded config file: /home/jovyan/.jupyter/jupyter_notebook_config.json
+[D 16:27:28.620 NotebookApp] Looking for jupyter_notebook_config in /home/jovyan
+[D 16:27:28.626 NotebookApp] Paths used for configuration of jupyter_notebook_config: 
+    	/etc/jupyter/jupyter_notebook_config.json
+[D 16:27:28.627 NotebookApp] Paths used for configuration of jupyter_notebook_config: 
+    	/usr/local/etc/jupyter/jupyter_notebook_config.json
+[D 16:27:28.628 NotebookApp] Paths used for configuration of jupyter_notebook_config: 
+    	/opt/conda/etc/jupyter/jupyter_notebook_config.d/jupyterlab.json
+    	/opt/conda/etc/jupyter/jupyter_notebook_config.json
+[D 16:27:28.629 NotebookApp] Paths used for configuration of jupyter_notebook_config: 
+    	/home/jovyan/.jupyter/jupyter_notebook_config.json
+[I 16:27:28.721 NotebookApp] Writing notebook server cookie secret to /home/jovyan/.local/share/jupyter/runtime/notebook_cookie_secret
+[I 16:27:29.335 NotebookApp] FAIR-Cells loaded.
+[I 16:27:29.892 NotebookApp] JupyterLab extension loaded from /opt/conda/lib/python3.8/site-packages/jupyterlab
+[I 16:27:29.892 NotebookApp] JupyterLab application directory is /opt/conda/share/jupyter/lab
+[I 16:27:29.896 NotebookApp] Serving notebooks from local directory: /home/jovyan
+[I 16:27:29.896 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 16:27:29.896 NotebookApp] http://589d485a459b:8888/?token=705e9dc1f39c581a74e4d616e7f699992de0c0697fa9da46
+[I 16:27:29.896 NotebookApp]  or http://127.0.0.1:8888/?token=705e9dc1f39c581a74e4d616e7f699992de0c0697fa9da46
+[I 16:27:29.896 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 16:27:29.900 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jovyan/.local/share/jupyter/runtime/nbserver-1-open.html
+    Or copy and paste one of these URLs:
+        http://589d485a459b:8888/?token=705e9dc1f39c581a74e4d616e7f699992de0c0697fa9da46
+     or http://127.0.0.1:8888/?token=705e9dc1f39c581a74e4d616e7f699992de0c0697fa9da46
+```
+
+With your browser (preferably chrome or chromium) open http://127.0.0.1:8888/?token=<TOKEN> .
+
+You may find the token in the output of the docker container. In this case the token is 705e9dc1f39c581a74e4d616e7f699992de0c0697fa9da46 
+for you, it may be different. 
+
