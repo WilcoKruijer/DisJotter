@@ -21,6 +21,7 @@ FAIR-Cells can be downloaded using pip. It then needs to be enabled using three 
  
 ```bash
 $ python3 -m venv venv
+$ source ./venv/bin/activate
 ```
 
 ```bash
