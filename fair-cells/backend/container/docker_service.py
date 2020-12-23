@@ -114,8 +114,8 @@ class DockerService:
         logging.info("images: " + str(images))
         results = []
         for image in images:
-            logging.info("Pushing: " + str(image.split(':')[0]))
-            re = self.client.images.push(image.split(':')[0])
+            logging.info("Pushing: " + str(image['name'].split(':')[0]))
+            re = self.client.images.push(image['name'].split(':')[0])
             logging.info("re: " + str(re))
             results.append(re)
         return results

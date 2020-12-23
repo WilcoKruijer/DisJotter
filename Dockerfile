@@ -15,7 +15,9 @@ RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
 
-RUN pip install laserchicken matplotlib open3d
+RUN pip install laserchicken matplotlib open3d docker
+
+COPY docker/helper_dummy/classifiers.ipynb /home/jovyan/work
 
 ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug --NotebookApp.token=''
 
