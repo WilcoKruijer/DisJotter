@@ -84,7 +84,7 @@ class BuildHandler(BaseHandler):
             with open(tmpdir + "/environment.yml", "a") as reqs:
                 reqs.write(requirements)
 
-            with open(tmpdir + "/nb_helper_config_empty.json", "a") as cfg:
+            with open(tmpdir + "/nb_helper_config.json", "a") as cfg:
                 config = create_config(notebook_name, cell_index, variables)
                 cfg.write(config)
 

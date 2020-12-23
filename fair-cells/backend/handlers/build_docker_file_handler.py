@@ -9,7 +9,6 @@ from typing import Optional
 import docker
 from notebook.base.handlers import IPythonHandler, APIHandler, HTTPError
 from notebook.utils import url_path_join
-from pigar.core import parse_packages
 
 from ..container.docker_service import DockerService
 from .base_handler import BaseHandler
@@ -69,7 +68,7 @@ class BuildDockerFileHandler(BaseHandler):
             with open(tmpdir + "/environment.yml", "a") as reqs:
                 reqs.write(requirements)
 
-            with open(tmpdir + "/nb_helper_config_empty.json", "a") as cfg:
+            with open(tmpdir + "/nb_helper_config.json", "a") as cfg:
                 config = create_config(notebook_name, cell_index, variables)
                 cfg.write(config)
 
