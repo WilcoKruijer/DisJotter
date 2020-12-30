@@ -114,10 +114,15 @@ class DockerService:
         logging.info("images: " + str(images))
         results = []
         for image in images:
-            logging.info("Pushing: " + str(image['name'].split(':')[0]))
-            re = self.client.images.push(image['name'].split(':')[0])
-            logging.info("re: " + str(re))
-            results.append(re)
+            push_resp = None
+            if isinstance(image,str):
+                logging.info("Pushing: " + str(image))
+                push_resp = self.client.images.push(image)
+            elif isinstance(image,dict):
+                logging.info("Pushing: " + str(image['name'].split(':')[0]))
+                push_resp = self.client.images.push(image['name'].split(':')[0])
+            logging.info("re: " + str(push_resp))
+            results.append(push_resp)
         return results
 
     def get_image_status(self, image=None):

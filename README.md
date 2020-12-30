@@ -133,3 +133,5 @@ Go back to Jupyter and stop the service by pressing 'stop'
 
 Open the 'Publish' tab and fill in your username and Access Token and press 'Login'. 
 If the login was successful you can press 'Publish'
+![](images/tutorial-01-21/fair-cells_tut9.png)
+![](images/tutorial-01-21/fair-cells_tut10.png)
