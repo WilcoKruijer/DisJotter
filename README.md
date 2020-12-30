@@ -79,7 +79,7 @@ Token in dockerhub you may follow these instructions: https://docs.docker.com/do
 ### Start FAIR-Cells
 Start the docker container with jupyter and FAIR-Cells enabled:
 ```bash
- [sudo] docker run -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells:1.0.13-winter-school-20
+ [sudo] docker run -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells:release-1.0.13-winter-school-20
 ```
 
 With your browser (preferably chrome or chromium) open http://127.0.0.1:8888/. The 'work' folder of the Jupyter server 
