@@ -6,6 +6,13 @@ RUN apt update && apt upgrade -y && apt install gcc python3-dev libgl1-mesa-glx 
 
 EXPOSE 8888
 
+
+
+RUN pip install laserchicken matplotlib open3d docker
+
+COPY docker/helper_dummy/classifiers.ipynb /home/jovyan/work
+
+
 COPY . src
 WORKDIR src
 RUN python setup.py install
@@ -14,10 +21,6 @@ RUN jupyter nbextension install --py fair-cells
 RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
-
-RUN pip install laserchicken matplotlib open3d docker
-
-COPY docker/helper_dummy/classifiers.ipynb /home/jovyan/work
 
 ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug --NotebookApp.token=''
 
