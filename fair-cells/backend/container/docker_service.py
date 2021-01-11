@@ -1,6 +1,7 @@
 """
 POC: Create a Docker container from a Python script.
 """
+import json
 import sys
 import os
 import random
@@ -9,11 +10,11 @@ import string
 import docker
 
 import traceback
-
+from pathlib import Path
 import logging
 logger = logging.getLogger('DockerService')
 logger.setLevel(logging.DEBUG)
-
+from os.path import expanduser
 
 #  Small hack so we can use a dockerfile string instead of having to write it
 #  to disk first. See:
@@ -61,7 +62,7 @@ class DockerService:
             logging.info("dockerfile: "+str(dockerfile))
             logging.info("Start building container. self.client.images.build")
 
-            image, log = self.client.images.build(tag='cloudcells/'+image_name,
+            image, log = self.client.images.build(tag=image_name,
                                             path='.',
                                             dockerfile=dockerfile,
                                             rm=True,
@@ -89,7 +90,21 @@ class DockerService:
         return container_out
 
     def login(self,url=None,username=None,token=None):
-        logging.info('username: '+username +'password: '+token + 'registry:'+url)
+        self.username = username
+        self.password = token
+        self.registry = url
+        home_dir = str(Path.home())
+        conf_dir = home_dir+'/.docker/'
+
+        if not os.path.exists(conf_dir):
+            os.makedirs(conf_dir)
+        self.dockercfg_path = conf_dir + '/auth.json'
+        if not os.path.exists(self.dockercfg_path):
+            with open(self.dockercfg_path, 'w'): pass
+        auth = {'username':self.username ,'password':self.password,'registry':self.registry}
+        with open(self.dockercfg_path, 'w') as fp:
+            json.dump(auth, fp)
+        logging.info(str(auth))
         resp = self.client.login(username=username, password=token, registry=url)
         logging.info("resp: " + str(resp))
         return resp
@@ -113,11 +128,25 @@ class DockerService:
     def push(self,images):
         logging.info("images: " + str(images))
         results = []
+        home_dir = str(Path.home())
+        conf_dir = home_dir + '/.docker/'
+        dockercfg_path = conf_dir + '/auth.json'
+
+        with open(dockercfg_path) as json_file:
+            auth = json.load(json_file)
+
+        resp = self.client.login(username=auth['username'], password=auth['password'], registry=auth['registry'])
+        logging.info("resp: " + str(resp))
         for image in images:
-            logging.info("Pushing: " + str(image.split(':')[0]))
-            re = self.client.images.push(image.split(':')[0])
-            logging.info("re: " + str(re))
-            results.append(re)
+            push_resp = None
+            if isinstance(image,str):
+                logging.info("Pushing: " + str(image))
+                push_resp = self.client.images.push(image)
+            elif isinstance(image,dict):
+                logging.info("Pushing: " + str(image['name'].split(':')[0]))
+                push_resp = self.client.images.push(image['name'].split(':')[0])
+            logging.info("re: " + str(push_resp))
+            results.append(push_resp)
         return results
 
     def get_image_status(self, image=None):
