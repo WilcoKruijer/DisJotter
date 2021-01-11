@@ -1,14 +1,19 @@
 FROM jupyter/base-notebook
 
 USER root
-
-RUN apt update && apt upgrade -y && apt install gcc python3-dev -y
+RUN apt update && apt upgrade -y && apt install gcc python3-dev libgl1-mesa-glx ffmpeg libsm6 libxext6  -y
 
 
 EXPOSE 8888
 
+
+
+RUN pip install laserchicken matplotlib open3d docker
+
+COPY docker/helper_dummy/classifiers.ipynb /home/jovyan/work
+
+
 COPY . src
-RUN pip install laserchicken matplotlib open3d-python
 WORKDIR src
 RUN python setup.py install
 RUN jupyter serverextension enable --py fair-cells
