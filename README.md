@@ -25,11 +25,11 @@ $ source ./venv/bin/activate
 ```
 
 ```bash
-$ [sudo] pip install jupyter --user
-$ [sudo] pip install fair-cells --user
-$ jupyter serverextension enable --py fair-cells --user
+$ pip install jupyter matplotlib docker fair-cells
+$ jupyter serverextension enable --py fair-cells
 $ jupyter nbextension install --py fair-cells --user
 $ jupyter nbextension enable fair-cells --user --py
+
 ```
 Start jupyter notebook with:
 
