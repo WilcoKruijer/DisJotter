@@ -19,12 +19,12 @@ FAIR-Cells can be downloaded using pip. It then needs to be enabled using three 
  
  Optionally, you may want to set up a virtual python environment:
  
-```bash
+```
 $ python3 -m venv venv
 $ source ./venv/bin/activate
 ```
 
-```bash
+```
 $ pip install jupyter matplotlib docker fair-cells
 $ jupyter serverextension enable --py fair-cells
 $ jupyter nbextension install --py fair-cells --user
@@ -33,13 +33,13 @@ $ jupyter nbextension enable fair-cells --user --py
 ```
 Start jupyter notebook with:
 
-```bash
+```
 $ jupyter notebook
 ```
 You can now open http://localhost:8888 
 
 ## Run with Docker
-```bash
+```
 docker run -it -p 8888:8888  -e GEN_CERT=yes -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
 ```
 
