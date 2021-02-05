@@ -22,7 +22,7 @@ RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
 
-ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug --NotebookApp.token=''
+ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug
 
 #
 #ENTRYPOINT cd /src && \
