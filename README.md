@@ -43,6 +43,7 @@ You can now open http://localhost:8888
 docker run -it -p 8888:8888  -e GEN_CERT=yes -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
 ```
 **WARNING!! Do not use this in a production environment. This will expose the machine running Jupyter and allow anyone to execute code on the hosting machine** 
+https://jupyter-notebook.readthedocs.io/en/stable/security.html#the-problem 
 
 ## Development
 To keep your system clean it is recommended to develop using Docker. The following command will run a Jupyter Notebook 
