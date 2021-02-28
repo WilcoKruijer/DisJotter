@@ -42,6 +42,10 @@ You can now open http://localhost:8888
 ```
 docker run -it -p 8888:8888  -e GEN_CERT=yes -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
 ```
+or with mounting X11
+ ```
+docker run --privileged -e "DISPLAY=unix:0.0" -v="/tmp/.X11-unix:/tmp/.X11-unix:rw"  -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells
+ ```
 **WARNING!! Do not use this in a production environment. This will expose the machine running Jupyter and allow anyone to execute code on the hosting machine** 
 https://jupyter-notebook.readthedocs.io/en/stable/security.html#the-problem 
 
