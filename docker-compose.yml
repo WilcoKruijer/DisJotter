@@ -4,9 +4,6 @@ services:
   web:
     image: qcdis/fair-cells
     container_name: awx_web
-    depends_on:
-      - redis
-      - postgres
     ports:
       - "8888:8888"
     restart: unless-stopped
