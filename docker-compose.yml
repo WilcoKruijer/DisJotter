@@ -6,8 +6,12 @@ services:
     ports:
       - "8888:8888"
     restart: unless-stopped
+    environment:
+      EN_CERT: yes
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      
+      
 #     main:
 #         build:
 #             context: .
