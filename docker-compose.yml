@@ -1,24 +1,35 @@
 version: '3'
 
 services:
-    main:
-        build:
-            context: .
-            dockerfile: ./docker/Dockerfile
-        volumes:
-            - .:/src
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./notebooks:/notebooks
-        ports:
-            - "8888:8888"
-        environment:
-          - PASSWORD=password
-    helper:
-        build:
-            context: .
-            dockerfile: ./docker/helper.Dockerfile
-        volumes:
-            - ./fair-cells:/src/fair-cells
-            - ./docker/helper_dummy:/src
-        ports:
-            - "10000:8888"
+  web:
+    image: qcdis/fair-cells
+    container_name: awx_web
+    depends_on:
+      - redis
+      - postgres
+    ports:
+      - "8888:8888"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+#     main:
+#         build:
+#             context: .
+#             dockerfile: ./docker/Dockerfile
+#         volumes:
+#             - .:/src
+#             - /var/run/docker.sock:/var/run/docker.sock
+#             - ./notebooks:/notebooks
+#         ports:
+#             - "8888:8888"
+#         environment:
+#           - PASSWORD=password
+#     helper:
+#         build:
+#             context: .
+#             dockerfile: ./docker/helper.Dockerfile
+#         volumes:
+#             - ./fair-cells:/src/fair-cells
+#             - ./docker/helper_dummy:/src
+#         ports:
+#             - "10000:8888"
