@@ -1,9 +1,8 @@
 version: '3'
 
 services:
-  web:
+  fair-cells:
     image: qcdis/fair-cells
-    container_name: awx_web
     ports:
       - "8888:8888"
     restart: unless-stopped
