@@ -1,7 +1,7 @@
 FROM jupyter/base-notebook
 
 USER root
-RUN apt update && apt autoclean -y && apt autoremove -y && #apt upgrade -y && apt install gcc python3-dev libgl1-mesa-glx ffmpeg libsm6 libxext6  -y
+RUN apt update && apt autoclean -y && apt autoremove -y #&& apt upgrade -y && apt install gcc python3-dev libgl1-mesa-glx ffmpeg libsm6 libxext6  -y
 
 
 EXPOSE 8888
