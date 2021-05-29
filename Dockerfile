@@ -22,6 +22,9 @@ RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
 
+ENV SSH_PORT 2222
+EXPOSE 2222 8080
+
 ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug
 
 #
