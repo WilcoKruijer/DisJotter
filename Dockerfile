@@ -24,26 +24,19 @@ RUN jupyter nbextension enable fair-cells  --py
 WORKDIR ../
 RUN rm -r src
 
-ENV SSH_PORT 2222
-EXPOSE 2222 8080
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends dialog \
+        && apt-get update \
+	&& apt-get install -y --no-install-recommends openssh-server \
+	&& echo "$SSH_PASSWD" | chpasswd 
 
-# configure startup
-RUN mkdir -p /tmp
 COPY sshd_config /etc/ssh/
-
-COPY ssh_setup.sh /tmp
-RUN chmod -R +x /tmp/ssh_setup.sh \
-   && (sleep 1;/tmp/ssh_setup.sh 2>&1 > /dev/null) \
-   && rm -rf /tmp/*
-
-ENV PORT 8080
-ENV SSH_PORT 2222
-EXPOSE 2222 8080
-
-
-COPY init_container.sh /tmp/
-RUN chmod 755 /tmp/init_container.sh
-ENTRYPOINT ["/opt/startup/init_container.sh"]
+COPY init.sh /usr/local/bin/
+	
+RUN chmod u+x /usr/local/bin/init.sh
+EXPOSE 8000 2222
+ENTRYPOINT ["init.sh"]
 
 # ENTRYPOINT jupyter notebook -y --port=8888 --no-browser --allow-root --debug
 
