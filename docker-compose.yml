@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     image:  qcdis/fair-cells:release-1.0.15
     ports:
-    - 443:8888
+    - 8888:8888
     environment:
       GEN_CERT: "yes"
       JUPYTER_ENABLE_LAB: "yes"
