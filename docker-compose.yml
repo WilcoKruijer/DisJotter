@@ -5,9 +5,8 @@ services:
     image:  qcdis/fair-cells:release-1.0.15
     ports:
     - 443:8888
-    - 80:8888
     environment:
-#      GEN_CERT: "yes"
+      GEN_CERT: "yes"
       JUPYTER_ENABLE_LAB: "yes"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
