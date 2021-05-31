@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     image: qcdis/fair-cells:release-1.0.15
     ports:
-      - "8888:8888"
+      - "8889:8888"
     volumes:
         - .:/src
         - /var/run/docker.sock:/var/run/docker.sock
