@@ -1,21 +1,27 @@
 version: '3'
 services:
-   nginx:
-     image: nginx
-     volumes:
-       - ./nginx.conf:/etc/nginx/nginx.conf
+
+  nginx:
+    restart: unless-stopped
+    image:  nginx
+    ports:
+    - 8080:8080
+    - 443:443
+    - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+#      - ./cert.pem:/etc/nginx/cert.pem
+#      - ./privkey.pem:/etc/nginx/privkey.pem
        - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/fullchain.pem:/etc/nginx/cert.pem
        - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/privkey.pem:/etc/nginx/privkey.pem
-       - /etc/nginx/htpasswd:/etc/nginx/htpasswd
-     ports:
-     - "80:80"
-     - "443:443"
+      - ./htpasswd:/etc/nginx/.htpasswd
 
   faircells:
     restart: unless-stopped
     image:  qcdis/fair-cells:release-1.0.15
-#    ports:
-#    - 8888:8888
+    entrypoint: jupyter notebook --allow-root --debug --NotebookApp.base_url='vre-v1'  --NotebookApp.token=''
+    ports:
+    - 8888:8888
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       DISPLAY: "unix:0:0:"
@@ -27,14 +33,15 @@ services:
   jupyterlab_vre:
     restart: unless-stopped
     image:  qcdis/jupyterlab_vre:latest
-    command: jupyter lab --debug
+    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token=''
     ports:
-    - 8881:8888
+    - 8889:8888
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       DISPLAY: "unix:0:0:"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+#      - "./jupyter_notebook_config.py:/etc/jupyter/jupyter_notebook_config.py:ro"
 
 
