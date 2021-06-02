@@ -1,14 +1,12 @@
 FROM jupyter/base-notebook
 
 USER root
-RUN apt update && apt upgrade -y && apt install gcc python3-dev libgl1-mesa-glx ffmpeg libsm6 libxext6  -y
+RUN apt update && apt autoclean -y && apt autoremove -y && apt upgrade -y && apt install gcc python3-dev libgl1-mesa-glx ffmpeg libsm6 libxext6  -y
 
 
 EXPOSE 8888
 
-
-
-RUN pip install laserchicken matplotlib jupyterlab #open3d docker
+RUN pip install matplotlib docker #open3d laserchicken
 
 COPY docker/helper_dummy/classifiers.ipynb /home/jovyan/work
 
