@@ -18,10 +18,10 @@ services:
 
   faircells:
     restart: unless-stopped
-    image:  ff #qcdis/fair-cells:release-1.0.15
-    entrypoint: jupyter notebook --allow-root --debug --NotebookApp.base_url='vre-v1'  --NotebookApp.token='' --NotebookApp.ip='*' --NotebookApp.allow_origin='*' --NotebookApp.open_browser=False --NotebookApp.trust_xheaders=True
-    ports:
-    - 8888:8888
+    image:  qcdis/fair-cells:release-1.0.15
+    entrypoint: jupyter notebook --allow-root --debug --NotebookApp.token='' --NotebookApp.ip='*' --NotebookApp.allow_origin='*' --NotebookApp.open_browser=False --NotebookApp.trust_xheaders=True
+#    ports:
+#    - 8888:8888
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       DISPLAY: "unix:0:0:"
@@ -34,9 +34,9 @@ services:
   jupyterlab_vre:
     restart: unless-stopped
     image:  qcdis/jupyterlab_vre:latest
-    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token=''
-    ports:
-    - 8889:8888
+    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token='' --ServerApp.ip='*' --ServerApp.allow_origin='*' --ServerApp.open_browser=False --ServerApp.trust_xheaders=True
+#    ports:
+#    - 8889:8888
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       DISPLAY: "unix:0:0:"
