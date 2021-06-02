@@ -8,7 +8,7 @@ EXPOSE 8888
 
 
 
-RUN pip install laserchicken matplotlib open3d docker
+RUN pip install laserchicken matplotlib jupyterlab #open3d docker
 
 COPY docker/helper_dummy/classifiers.ipynb /home/jovyan/work
 
