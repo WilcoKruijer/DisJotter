@@ -1,22 +1,21 @@
 version: '3'
 services:
-#   nginx:
-#     image: nginx
-#     volumes:
-#       - ./nginx.conf:/etc/nginx/nginx.conf
-#       - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/fullchain.pem:/etc/nginx/cert.pem
-#       - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/privkey.pem:/etc/nginx/privkey.pem
-#       - /etc/nginx/htpasswd:/etc/nginx/htpasswd
-#     ports:
-#     - "80:80"
-#     - "443:443"
+   nginx:
+     image: nginx
+     volumes:
+       - ./nginx.conf:/etc/nginx/nginx.conf
+       - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/fullchain.pem:/etc/nginx/cert.pem
+       - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/privkey.pem:/etc/nginx/privkey.pem
+       - /etc/nginx/htpasswd:/etc/nginx/htpasswd
+     ports:
+     - "80:80"
+     - "443:443"
 
   faircells:
     restart: unless-stopped
     image:  qcdis/fair-cells:release-1.0.15
-    command: start.sh jupyter lab --LabApp.token=''
-    ports:
-    - 8888:8888
+#    ports:
+#    - 8888:8888
     environment:
       JUPYTER_ENABLE_LAB: "yes"
       DISPLAY: "unix:0:0:"
