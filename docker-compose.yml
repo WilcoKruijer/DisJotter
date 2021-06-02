@@ -28,6 +28,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - notebooks-work-v1:/home/jovyan/work
 
 
   jupyterlab_vre:
@@ -42,4 +43,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-#      - "./jupyter_notebook_config.py:/etc/jupyter/jupyter_notebook_config.py:ro"
+      - notebooks-work-v2:/home/jovyan/work
+
+
+
+volumes:
+  notebooks-work-v1:
+  notebooks-work-v2:
