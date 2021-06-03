@@ -75,7 +75,7 @@ class BuildDockerFileHandler(BaseHandler):
             for requ in environment['dependencies'][0]['pip']:
                 lines += requ + '\n'
 
-            with open('requirements.txt', 'w') as f:
+            with open(tmpdir + 'requirements.txt', 'w') as f:
                 f.write(lines)
             f.close()
 
