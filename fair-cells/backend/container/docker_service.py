@@ -40,7 +40,9 @@ class DockerService:
 
                 f'COPY ./fair-cells/ /src/fair-cells/',
                 f"RUN pip install -r /src/fair-cells/helper/helper_requirements.txt",
-                f"RUN pip install -r requirements.txt",
+
+                f'COPY ./requirements.txt /src/requirements.txt',
+                f"RUN pip install -r /src/requirements.txt",
                 # f'COPY ./environment.yml /src/environment.yml',
                 # f"RUN conda env update --file environment.yml --name base",
 
