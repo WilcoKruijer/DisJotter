@@ -10,10 +10,10 @@ services:
 #    - 80:80
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-#      - ./cert.pem:/etc/nginx/cert.pem
-#      - ./privkey.pem:/etc/nginx/privkey.pem
-      - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/fullchain.pem:/etc/nginx/cert.pem
-      - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/privkey.pem:/etc/nginx/privkey.pem
+      - ./cert.pem:/etc/nginx/cert.pem
+      - ./privkey.pem:/etc/nginx/privkey.pem
+#      - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/fullchain.pem:/etc/nginx/cert.pem
+#      - /etc/letsencrypt/live/fair-cells.livewatchvlic.nl/privkey.pem:/etc/nginx/privkey.pem
       - ./htpasswd:/etc/nginx/.htpasswd
 
   faircells:
@@ -42,17 +42,17 @@ services:
     volumes:
       - /home/vm_user/webdav-data:/media
 
-#  jupyterlab_vre:
-#    restart: unless-stopped
-#    image:  qcdis/jupyterlab_vre:latest
-#    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token='' --ServerApp.ip='*' --ServerApp.allow_origin='*' --ServerApp.open_browser=False --ServerApp.trust_xheaders=True
-##    ports:
-##    - 8889:8888
-#    environment:
-#      JUPYTER_ENABLE_LAB: "yes"
-#      DISPLAY: "unix:0:0:"
-#    volumes:
-#      - notebooks-work-v2:/home/jovyan/work
+  jupyterlab_vre:
+    restart: unless-stopped
+    image:  qcdis/jupyterlab_vre:latest
+    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token='' --ServerApp.ip='*' --ServerApp.allow_origin='*' --ServerApp.open_browser=False --ServerApp.trust_xheaders=True
+#    ports:
+#    - 8889:8888
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      DISPLAY: "unix:0:0:"
+    volumes:
+      - notebooks-work-v2:/home/jovyan/work
 
 
 #  jupyterhub:
