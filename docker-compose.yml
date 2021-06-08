@@ -31,16 +31,16 @@ services:
       - notebooks-work-v1:/home/jovyan/work
 
 
-  webdav:
-    restart: unless-stopped
-    image:  ionelmc/webdav
-    expose:
-    - 8080
-    environment:
-      UID: $UID
-      DISPLAY: "unix:0:0:"
-    volumes:
-      - /home/vm_user/webdav-data:/media
+#  webdav:
+#    restart: unless-stopped
+#    image:  ionelmc/webdav
+#    expose:
+#    - 8080
+#    environment:
+#      UID: $UID
+#      DISPLAY: "unix:0:0:"
+#    volumes:
+#      - /home/vm_user/webdav-data:/media
 
 #  jupyterlab_vre:
 #    restart: unless-stopped
