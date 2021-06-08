@@ -33,7 +33,7 @@ services:
 
   webdav:
     restart: unless-stopped
-    image:  ionelmc/webdavs
+    image:  ionelmc/webdav
     entrypoint: jupyter notebook --allow-root --debug --NotebookApp.token='' --NotebookApp.ip='*' --NotebookApp.allow_origin='*' --NotebookApp.open_browser=False --NotebookApp.trust_xheaders=True
     expose:
     - 8080
