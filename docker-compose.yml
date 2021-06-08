@@ -31,20 +31,42 @@ services:
       - notebooks-work-v1:/home/jovyan/work
 
 
-  jupyterlab_vre:
-    restart: unless-stopped
-    image:  qcdis/jupyterlab_vre:latest
-    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token='' --ServerApp.ip='*' --ServerApp.allow_origin='*' --ServerApp.open_browser=False --ServerApp.trust_xheaders=True
-#    ports:
-#    - 8889:8888
+  webdav:
+    restart: ionelmc/webdavs
+    image:  qcdis/fair-cells:release-1.0.15
+    entrypoint: jupyter notebook --allow-root --debug --NotebookApp.token='' --NotebookApp.ip='*' --NotebookApp.allow_origin='*' --NotebookApp.open_browser=False --NotebookApp.trust_xheaders=True
+    expose:
+    - 8080
     environment:
-      JUPYTER_ENABLE_LAB: "yes"
+      UID: $UID
       DISPLAY: "unix:0:0:"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - notebooks-work-v2:/home/jovyan/work
+      - /home/vm_user/webdav-data:/media
 
+#  jupyterlab_vre:
+#    restart: unless-stopped
+#    image:  qcdis/jupyterlab_vre:latest
+#    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-v2' --ServerApp.token='' --ServerApp.ip='*' --ServerApp.allow_origin='*' --ServerApp.open_browser=False --ServerApp.trust_xheaders=True
+##    ports:
+##    - 8889:8888
+#    environment:
+#      JUPYTER_ENABLE_LAB: "yes"
+#      DISPLAY: "unix:0:0:"
+#    volumes:
+#      - notebooks-work-v2:/home/jovyan/work
+
+
+#  jupyterhub:
+#    restart: unless-stopped
+#    image:  jupyterhub/jupyterhub jupyterhub
+##    entrypoint: jupyter lab --debug --ServerApp.base_url='vre-jupyterhub' --ServerApp.token='' --ServerApp.ip='*' --ServerApp.allow_origin='*' --ServerApp.open_browser=False --ServerApp.trust_xheaders=True
+##    ports:
+##    - 8889:8888
+#    environment:
+#      JUPYTER_ENABLE_LAB: "yes"
+#      DISPLAY: "unix:0:0:"
+#    volumes:
+#      - notebooks-work-v2:/home/jovyan/work
 
 
 volumes:
