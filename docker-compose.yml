@@ -32,8 +32,8 @@ services:
 
 
   webdav:
-    restart: ionelmc/webdavs
-    image:  qcdis/fair-cells:release-1.0.15
+    restart: unless-stopped
+    image:  ionelmc/webdavs
     entrypoint: jupyter notebook --allow-root --debug --NotebookApp.token='' --NotebookApp.ip='*' --NotebookApp.allow_origin='*' --NotebookApp.open_browser=False --NotebookApp.trust_xheaders=True
     expose:
     - 8080
