@@ -1,0 +1,119 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: workflow-test-
+spec:
+    entrypoint: workflow-test
+    templates:
+    - name: workflow-test
+      dag:
+        tasks:
+        - name: demo-step-5
+          dependencies: [ demo-step-3,  demo-step-4 ]
+          template: demo-step-5-tmp
+          arguments:
+            parameters:
+            - {name: var_3, value: "{{tasks.demo-step-3.outputs.result}}"}
+            - {name: var_4, value: "{{tasks.demo-step-4.outputs.result}}"}
+        - name: demo-step-4
+          dependencies: [ demo-step-2,  demo-step-1 ]
+          template: demo-step-4-tmp
+          arguments:
+            parameters:
+            - {name: var_2, value: "{{tasks.demo-step-2.outputs.result}}"}
+            - {name: var_1, value: "{{tasks.demo-step-1.outputs.result}}"}
+        - name: demo-step-3
+          dependencies: [ demo-step-2,  demo-step-1 ]
+          template: demo-step-3-tmp
+          arguments:
+            parameters:
+            - {name: var_2, value: "{{tasks.demo-step-2.outputs.result}}"}
+            - {name: var_1, value: "{{tasks.demo-step-1.outputs.result}}"}
+        - name: demo-step-2
+          template: demo-step-2-tmp
+        - name: demo-step-1
+          template: demo-step-1-tmp
+        - name: demo-step-6-distribute-a
+          template: demo-step-6-distribute-a-tmp
+        - name: demo-step-6-distribute-b
+          dependencies: [ demo-step-5,  demo-step-6-distribute-a ]
+          template: demo-step-6-distribute-b-tmp
+          arguments:
+            parameters:
+            - {name: var_5, value: "{{tasks.demo-step-5.outputs.result}}"}
+            - {name: ll_sum, value: "{{item}}"}
+          withParam: "{{tasks.demo-step-6-distribute-a.outputs.result}}"
+
+    - name: demo-step-5-tmp
+      inputs:
+        parameters:
+        - name: var_3
+        - name: var_4
+      container:
+        image: "qcdis/demo-step-5"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-5.py
+            --var_3 {{inputs.parameters.var_3}}
+            --var_4 {{inputs.parameters.var_4}};
+    - name: demo-step-4-tmp
+      inputs:
+        parameters:
+        - name: var_2
+        - name: var_1
+      container:
+        image: "qcdis/demo-step-4"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-4.py
+            --var_2 {{inputs.parameters.var_2}}
+            --var_1 {{inputs.parameters.var_1}};
+    - name: demo-step-3-tmp
+      inputs:
+        parameters:
+        - name: var_2
+        - name: var_1
+      container:
+        image: "qcdis/demo-step-3"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-3.py
+            --var_2 {{inputs.parameters.var_2}}
+            --var_1 {{inputs.parameters.var_1}};
+    - name: demo-step-2-tmp
+      container:
+        image: "qcdis/demo-step-2"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-2.py;
+    - name: demo-step-1-tmp
+      container:
+        image: "qcdis/demo-step-1"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-1.py;
+    - name: demo-step-6-distribute-a-tmp
+      container:
+        image: "qcdis/demo-step-6-distribute-a"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-6-distribute-a.py;
+    - name: demo-step-6-distribute-b-tmp
+      inputs:
+        parameters:
+        - name: var_5
+        - name: ll_sum
+      container:
+        image: "qcdis/demo-step-6-distribute-b"
+        command: ["/bin/bash", "-c"]
+        args:
+          - source /venv/bin/activate;
+            python demo-step-6-distribute-b.py
+            --var_5 {{inputs.parameters.var_5}}
+            --ll_sum {{inputs.parameters.ll_sum}};
