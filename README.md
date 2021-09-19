@@ -29,7 +29,7 @@ You can now open http://localhost:8888
 ## Getting stated  
 
 When you start JupyterLab you'll see at the bottom the of the luncher page the LifeWatch VRE section 
-![](images/tutorial-09-21/1.png)
+![](images/tutorial-09-21/1.png =250x)
 
 Start a new python notebook 
 ![](images/tutorial-09-21/2.png)
