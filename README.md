@@ -34,10 +34,12 @@ When you start JupyterLab you'll see at the bottom the of the luncher page the L
 <img src="images/tutorial-09-21/1.png" alt="drawing" width="800"/>
 
 Start a new python notebook 
-![](images/tutorial-09-21/2.png)
+<!-- ![](images/tutorial-09-21/2.png) -->
+<img src="images/tutorial-09-21/2.png" alt="drawing" width="800"/>
 
 Create the following notebook: https://raw.githubusercontent.com/QCDIS/FAIRCells/master/simple_notebook.ipynb
 
 Note that the coment in the beginig of each cell are importatnt. This is the name that will be given to each generated docker image  
-![](images/tutorial-09-21/3.png)
+<!-- ![](images/tutorial-09-21/3.png) -->
+<img src="images/tutorial-09-21/3.png" alt="drawing" width="800"/>
 
