@@ -51,9 +51,9 @@ Add your credentials for the Cloud Automator. To do that select from the top bar
 Select the containerization tool from the left tab 
 <img src="images/tutorial-09-21/3-1.png" alt="drawing" width="800"/>
 
-Select the first cell and press 'ADD TO CATALOG'. This will start the process of containerizing the cell. 
+Select the first cell and press 'ADD TO CATALOG'. This will start the process of containerizing the cell and push it to docker hub.
 <img src="images/tutorial-09-21/3-2.png" alt="drawing" width="800"/>
-When this is done reapet the prcess for all of the cells 
+When this is done reapet the prcess for all of the cells. Each step takes aproximatlly 5 minutes.
 
 From the lunacher open the experimant manager 
 <img src="images/tutorial-09-21/6.png" alt="drawing" width="800"/>
