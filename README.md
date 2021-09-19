@@ -1,84 +1,34 @@
-![Upload Python Package](https://github.com/QCDIS/FAIRCells/workflows/Upload%20Python%20Package/badge.svg)
 # FAIR-Cells
 
-FAIR-Cells is a Jupyter Notebook extension that allows the user to interactively create a Docker image from a Jupyter Notebook. Our tool can be used to generate Docker images from single cells of a Jupyter Notebook. The generated image will run a web service that will output the specified cell. This includes image outputs like plots. Code introspection for Python enables the services to change cell output at service run-time.
-
- 
- [![FAIR-Cells Demo](https://raw.githubusercontent.com/QCDIS/FAIRCells/master/images/Screenshot%20from%202020-11-12%2013-17-47.png)](https://player.vimeo.com/video/478435713 "FAIR-Cells Demo")
-
-
-
-Among other things, FAIR-Cells is useful for reusing notebook components in workflows that support web services. 
-
-... More information to follow ...
-
+FAIR-Cells is a Jupyter Notebook extension that allows the user to interactively create a Docker image from a Jupyter Notebook. Our tool can be used to generate Docker images from single cells of a Jupyter Notebook. 
 
 ## Installation
-FAIR-Cells can be downloaded using pip. It then needs to be enabled using three Jupyter commands. Docker is required for the extension 
- to have any effect.
+Download the extention from: https://github.com/QCDIS/FAIRCells/blob/develop/jupyterlab_vre-1.0.0-py3-none-any.whl?raw=true
  
- Optionally, you may want to set up a virtual python environment:
- 
+On the folder you saved the extention create a python virtual environment.  
+```bash
+python3 -m venv venv
+source ./venv/bin/activate
 ```
-$ python3 -m venv venv
-$ source ./venv/bin/activate
-```
+Update pip and install the requirements 
+```bash
+pip install --upgrade pip
+pip install wheel setuptools_rust
+pip install jupyterlab_vre-1.0.0-py3-none-any.whl
+jupyter lab build 
+jupyter serverextension enable --py jupyterlab_vre --user
 
 ```
-$ pip install jupyter matplotlib docker fair-cells
-$ jupyter serverextension enable --py fair-cells
-$ jupyter nbextension install --py fair-cells --user
-$ jupyter nbextension enable fair-cells --user --py
+Start jupyter lab with:
 
 ```
-Start jupyter notebook with:
-
-```
-$ jupyter notebook
+jupyter lab 
 ```
 You can now open http://localhost:8888 
 
-## Run with Docker
-```
-docker run -it -p 8888:8888  -e GEN_CERT=yes -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells 
-```
-or with mounting X11
- ```
-docker run --privileged -e "DISPLAY=unix:0.0" -v="/tmp/.X11-unix:/tmp/.X11-unix:rw"  -it -p 8888:8888  -v /var/run/docker.sock:/var/run/docker.sock qcdis/fair-cells
- ```
-**WARNING!! Do not use this in a production environment. This will expose the machine running Jupyter and allow anyone to execute code on the hosting machine** 
-https://jupyter-notebook.readthedocs.io/en/stable/security.html#the-problem 
-
-## Development
-To keep your system clean it is recommended to develop using Docker. The following command will run a Jupyter Notebook 
-server with FAIR-Cells enabled at http://localhost:8888. Autoreload is enabled for Python files, you will need to reload 
-your browser to see changes in the front-end.
-
-```bash
-$ docker-compose up --build main
-```
-
-To test the helper server that runs inside the container run the following command. This uses a dummy notebook that 
-can be found in `docker/helper_dummy`. The notebook will be available at http://localhost:10000
-
-```bash
-$ docker-compose up --build helper
-```
 
 
-## Tutorial 
-
-## Prerequisites 
-
-Make sure you have Docker installed. To verify you may run:
-```bash
-$ [sudo] docker run hello-world
-```
-
-To be able to publish images to dockerhub you will need to create an account at https://registry.hub.docker.com/signup
-As soon as you have created you account create an Access Token that you will use to publish images. To create an Access 
-Token in dockerhub you may follow these instructions: https://docs.docker.com/docker-hub/access-tokens/ 
-
+## Getting stated  
 
 
 
