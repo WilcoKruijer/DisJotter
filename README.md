@@ -27,13 +27,14 @@ jupyter lab
 You can now open http://localhost:8888 
 
 ## Getting stated  
-### When you start JupyterLab you'll see at the bottom the of the luncher page the LifeWatch VRE section 
+
+When you start JupyterLab you'll see at the bottom the of the luncher page the LifeWatch VRE section 
 ![](images/tutorial-09-21/1.png)
 
-### Start a new python notebook 
+Start a new python notebook 
 ![](images/tutorial-09-21/2.png)
 
-## Create the following notebook: https://raw.githubusercontent.com/QCDIS/FAIRCells/master/simple_notebook.ipynb
+Create the following notebook: https://raw.githubusercontent.com/QCDIS/FAIRCells/master/simple_notebook.ipynb
 
 Note that the coment in the beginig of each cell are importatnt. This is the name that will be given to each generated docker image  
 ![](images/tutorial-09-21/3.png)
