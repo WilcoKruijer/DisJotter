@@ -31,7 +31,7 @@ You can now open http://localhost:8888
 When you start JupyterLab you'll see at the bottom the of the luncher page the LifeWatch VRE section 
 <!-- ![](images/tutorial-09-21/1.png) -->
 
-<img src="images/tutorial-09-21/1.png" alt="drawing" width="1000"/>
+<img src="images/tutorial-09-21/1.png" alt="drawing" width="800"/>
 
 Start a new python notebook 
 ![](images/tutorial-09-21/2.png)
