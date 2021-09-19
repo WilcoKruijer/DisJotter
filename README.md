@@ -3,7 +3,7 @@
 FAIR-Cells is a Jupyter Notebook extension that allows the user to interactively create a Docker image from a Jupyter Notebook. Our tool can be used to generate Docker images from single cells of a Jupyter Notebook. 
 
 ## Installation
-Download the extention from: https://github.com/QCDIS/FAIRCells/blob/develop/jupyterlab_vre-1.0.0-py3-none-any.whl?raw=true
+Download the extention from
  
 On the folder you saved the extention create a python virtual environment.  
 ```bash
@@ -53,6 +53,7 @@ Select the containerization tool from the left tab
 
 Select the first cell and press 'ADD TO CATALOG'. This will start the process of containerizing the cell and push it to docker hub.
 <img src="images/tutorial-09-21/3-2.png" alt="drawing" width="800"/>
+
 When this is done reapet the prcess for all of the cells. Each step takes aproximatlly 5 minutes.
 
 From the lunacher open the experimant manager 
