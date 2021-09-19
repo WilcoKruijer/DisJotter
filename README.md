@@ -43,3 +43,20 @@ Note that the coment in the beginig of each cell are importatnt. This is the nam
 <!-- ![](images/tutorial-09-21/3.png) -->
 <img src="images/tutorial-09-21/3.png" alt="drawing" width="800"/>
 
+Add your credentials for the Cloud Automator. To do that select from the top bar 'LifeWatch VRE'-> 'Manage Credential'
+<img src="images/tutorial-09-21/4.png" alt="drawing" width="800"/>
+<img src="images/tutorial-09-21/5.png" alt="drawing" width="800"/>
+
+
+Select the containerization tool from the left tab 
+<img src="images/tutorial-09-21/3-1.png" alt="drawing" width="800"/>
+
+Select the first cell and press 'ADD TO CATALOG'. This will start the process of containerizing the cell. 
+<img src="images/tutorial-09-21/3-2.png" alt="drawing" width="800"/>
+When this is done reapet the prcess for all of the cells 
+
+From the lunacher open the experimant manager 
+<img src="images/tutorial-09-21/6.png" alt="drawing" width="800"/>
+
+
+
