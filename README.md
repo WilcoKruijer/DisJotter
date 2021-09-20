@@ -58,8 +58,18 @@ When this is done reapet the prcess for all of the cells. Each step takes aproxi
 <img src="images/tutorial-09-21/3-3.png" alt="drawing" width="800"/>
 
 
-From the lunacher open the experimant manager 
+From the lunacher open the Experimant Manager 
 <img src="images/tutorial-09-21/6.png" alt="drawing" width="800"/>
+
+From the Experimant Manager you can see under the Local Catalog the containerized cells: s1,s2,s3. 
+From there you can constuct a workflow. 
+<img src="images/tutorial-09-21/6.png" alt="drawing" width="800"/>
+
+When you are done building your workflow press 'Export Workflow'. 
+<img src="images/tutorial-09-21/7.png" alt="drawing" width="800"/>
+On file explorere you'll see a file named 'workflow_test.yaml' 
+<img src="images/tutorial-09-21/8.png" alt="drawing" width="800"/>
+
 
 
 
