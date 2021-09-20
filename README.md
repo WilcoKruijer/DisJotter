@@ -72,5 +72,15 @@ On file explorere you'll see a file named 'workflow_test.yaml'
 <img src="images/tutorial-09-21/8.png" alt="drawing" width="800"/>
 
 
+Using the infratacure created by SDIA open the URL provided for the Argo workflow engine and press 'SUBBMIT NEW WORKFLOW'
+<img src="images/tutorial-09-21/9.png" alt="drawing" width="800"/>
+
+On the new window paste the contants of the 'workflow_test.yaml' file and press 'CREATE'
+<img src="images/tutorial-09-21/10.png" alt="drawing" width="800"/>
+
+You can see the ececution process
+<img src="images/tutorial-09-21/11.png" alt="drawing" width="800"/>
+
+
 
 
