@@ -67,6 +67,7 @@ From there you can constuct a workflow.
 
 When you are done building your workflow press 'Export Workflow'. 
 <img src="images/tutorial-09-21/7.png" alt="drawing" width="800"/>
+
 On file explorere you'll see a file named 'workflow_test.yaml' 
 <img src="images/tutorial-09-21/8.png" alt="drawing" width="800"/>
 
